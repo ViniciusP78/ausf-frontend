@@ -1,11 +1,13 @@
-export default {
+const mainTheme =  {
   primary: {
-    main: '',
+    main: '#595959',
   },
   secondary: {
-    main: '',
+    main: '#595959',
   },
   dark: {
     main: '#595959',
   }
-}
+};
+
+export default mainTheme;
