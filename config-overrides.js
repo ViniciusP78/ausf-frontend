@@ -9,6 +9,11 @@ module.exports = function override(config) {
       'themes': path.resolve(__dirname, 'src/themes'),
       'pages': path.resolve(__dirname, 'src/pages'),
       'routes': path.resolve(__dirname, 'src/routes'),
+      'services': path.resolve(__dirname, 'src/services'),
+      'models': path.resolve(__dirname, 'src/models'),
+      'styles': path.resolve(__dirname, 'src/styles'),
+      'utils': path.resolve(__dirname, 'src/utils'),
+      'api': path.resolve(__dirname, 'src/api.ts'),
     },
   };
 

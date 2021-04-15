@@ -21,10 +21,15 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "components/*" : ["./src/components/*"],
-      "themes/*" : ["./src/themes/*"],
-      "pages/*" : ["./src/pages/*"],
-      "routes/*" : ["./src/routes/*"]
+      "components/*": ["./src/components/*"],
+      "themes/*": ["./src/themes/*"],
+      "pages/*": ["./src/pages/*"],
+      "routes/*": ["./src/routes/*"],
+      "services/*": ["./src/services/*"],
+      "models/*": ["./src/models/*"],
+      "utils/*": ["./src/utils/*"],
+      "api": ["./src/api.js"],
+      "styles/*": ["./src/styles/*"],
     }
   },
 

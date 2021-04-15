@@ -1,11 +1,12 @@
-import react from 'react';
+import React from "react";
 
-import { Route }  from 'react-router-dom';
+import { Route } from "react-router-dom";
 
-const Routes = ()  => {
+const PublicRoute = ({ component: Component }) => {
+
   return (
-    <Route>
-      
-    </Route>
-  );
-}
+    <Route render={(props) => <Component {...props} />}></Route>
+  )
+};
+
+export default PublicRoute;
