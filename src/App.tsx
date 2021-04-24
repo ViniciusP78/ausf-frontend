@@ -11,14 +11,11 @@ import {
 } from "@material-ui/core";
 import { ThemeProvider } from "styled-components";
 
-import './types/theme.d';
-
 function App() {
   return (
     <ThemeProvider theme={mainTheme}>
-      <MuiThemeProvider theme={createMuiTheme({ palette: mainTheme })}>
+      <MuiThemeProvider theme={createMuiTheme({ palette: mainTheme as any })}>
         <GlobalStyle />
-
         <Routes />
       </MuiThemeProvider>
     </ThemeProvider>

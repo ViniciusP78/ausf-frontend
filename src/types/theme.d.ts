@@ -24,11 +24,14 @@ declare module "styled-components" {
 declare module '@material-ui/core/styles/createPalette' {
   interface Palette {
     dark: PaletteColor,
+    grey: PaletteOptions,
   }
 
   interface PaletteColor {
+    light: string,
     lighter: string,
     lightest: string,
+    dark: string,
     darker: string,
     darkest: string,
   }
