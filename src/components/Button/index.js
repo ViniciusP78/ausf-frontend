@@ -6,10 +6,10 @@ import { Button as MuiButton } from '@material-ui/core';
 
 const Button = ({ children, backgroundColor, color, fullWidth, ...rest }) => {
 
-  const classes = useStyles({ backgroundColor, color, fullWidth,  })()
+  const classes = useStyles({ backgroundColor, color, fullWidth })()
   
   return (
-    <MuiButton className={classes.button}>
+    <MuiButton className={classes.button} {...rest}>
       {children}
     </MuiButton>
   );

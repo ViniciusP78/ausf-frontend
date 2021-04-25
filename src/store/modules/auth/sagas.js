@@ -6,7 +6,7 @@ import api from 'api';
 
 export function* signIn(payload) {
   try {
-    const res = yield call(api.post, 'user/login', payload.data);
+    const res = yield call(api.post, 'sessions', payload.data);
     api.defaults.headers.Authorization = `Bearer ${res.data.token}`;
 
     return yield put(signInSuccess(res.data));

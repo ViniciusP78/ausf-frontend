@@ -117,7 +117,7 @@ export const Label = styled.label`
   margin-bottom: 5px;
 
   color: ${({ theme, error }) =>
-    error ? theme.error.main : theme.primary.main};
+    error ? theme.error.main : theme.grey.light};
 `;
 
 export const Error = styled.span`
