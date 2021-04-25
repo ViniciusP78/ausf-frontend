@@ -7,7 +7,7 @@ const AuthRoute = ({ component: Component, ...rest }) => {
   const auth = useSelector((state) => state.auth);
 
   return auth.logged ? (
-    <Redirect to="/" />
+    <Redirect to="/prontuarios" />
   ) : (
     <Route {...rest} render={(props) => <Component {...props} />}></Route>
   );
