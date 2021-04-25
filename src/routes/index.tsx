@@ -13,8 +13,8 @@ const Routes = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <AuthRoute path="/login" component={LoginPage} />
-        <Route path="/" component={() => <h1>Página inicial</h1>}/>
+        <AuthRoute path="/login" component={LoginPage}/>
+        <Route path="/" component={() => <h1>Página inicial</h1>} exact/>
         <Route path="/prontuarios" exact />
         <Route path="/prontuarios/:id" exact />
         <Route path="/prontuarios/:id/triagens" exact />
@@ -23,6 +23,7 @@ const Routes = () => {
         <Route path="/consultas/:id" exact />
         <Route path="/usuarios" exact />
         <Route path="/consultas" exact />
+        <PrivateRoute path="/abnerdeus" component={() => <></>} exact/>
       </Switch>
     </BrowserRouter>
   );
