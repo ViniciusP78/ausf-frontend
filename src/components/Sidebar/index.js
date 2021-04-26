@@ -15,7 +15,12 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
+
+
+import Button from "components/Button";
 import Card from "components/CardProntuario"
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import SearchBar from "components/Searchbar"
 
 const drawerWidth = 300;
 
@@ -91,7 +96,7 @@ function ResponsiveDrawer(props) {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar}>
+      {/* <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -106,13 +111,13 @@ function ResponsiveDrawer(props) {
             Responsive drawer
           </Typography>
         </Toolbar>
-      </AppBar>
+      </AppBar> */}
       <nav className={classes.drawer} aria-label="mailbox folders">
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Hidden smUp implementation="css">
           <Drawer
             container={container}
-            variant="temporary"
+            variant="permanent"
             anchor={theme.direction === 'rtl' ? 'right' : 'left'}
             open={mobileOpen}
             onClose={handleDrawerToggle}
@@ -139,7 +144,17 @@ function ResponsiveDrawer(props) {
         </Hidden>
       </nav>
       <main className={classes.content}>
-        <div className={classes.toolbar} />
+        <Box marginBottom="2rem">
+          <SearchBar placeholder="Pesquise por nome ou CPF" titulo="Pesquisar"/>
+        </Box>
+        <Box minHeight="100px">
+          <Box display="flex">
+            <Button type="submit">
+              <AddCircleIcon/>
+              Adicionar Paciente
+            </Button>
+          </Box>
+        </Box>
         <Card />
       </main>
     </div>
