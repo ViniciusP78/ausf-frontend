@@ -1,10 +1,10 @@
 // import Button from "components/Button";
-import Card from "components/CardProntuario"
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import SearchBar from "components/Searchbar"
+import Card from "components/CardProntuario";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
+import SearchBar from "components/Searchbar";
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { signOutRequest } from 'store/modules/auth/actions';
+import { signOutRequest } from "store/modules/auth/actions";
 
 import { ReactComponent as ProntuarioIcon } from "assets/icons/clipboard.svg";
 import { ReactComponent as ConsultaIcon } from "assets/icons/clock.svg";
@@ -29,14 +29,10 @@ function Sidebar({ open }) {
 
   const logout = () => {
     dispatch(signOutRequest());
-  }
+  };
 
   return (
-    <Drawer
-      variant="permanent"
-      open={true}
-      classes={{ paper: classes.sidebar }}
-    >
+    <Drawer variant="permanent" classes={{ paper: classes.sidebar }}>
       <div className={classes.header}>
         <Avatar style={{ width: 64, height: 64, marginRight: 16 }} />
         <div className="name-container">

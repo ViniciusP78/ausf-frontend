@@ -15,19 +15,11 @@ const PrivateLayout = ({ children }) => {
     <Container>
       <Sidebar/>
       <Content>
-        {children}
         <Box marginBottom="2rem">
           <SearchBar placeholder="Pesquise por nome ou CPF" titulo="Pesquisar"/>
         </Box>
-        <Box minHeight="100px">
-          <Box display="flex">
-            <Button type="submit">
-              <AddCircleIcon/>
-              Adicionar Paciente
-            </Button>
-          </Box>
-        </Box>
-        <Card />
+
+        {children}
       </Content>
     </Container>
   );

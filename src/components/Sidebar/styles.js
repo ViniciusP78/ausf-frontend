@@ -8,7 +8,8 @@ export default makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
     width: 260,
     borderRight: "none",
-    boxShadow: '-2px 0px 20px rgba(0, 0, 0, 0.20)'
+    boxShadow: '-2px 0px 20px rgba(0, 0, 0, 0.20)',
+    position: 'relative',
   },
 
   header: {
