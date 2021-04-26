@@ -15,12 +15,12 @@ const Routes = () => {
       <Switch>
         <AuthRoute path="/login" component={LoginPage}/>
         <Route path="/" component={() => <h1>Página inicial</h1>} exact/>
-        <Route path="/prontuarios" exact />
-        <Route path="/prontuarios/:id" exact />
-        <Route path="/prontuarios/:id/triagens" exact />
-        <Route path="/prontuarios/:id/consultas" exact />
-        <Route path="/consultas" exact />
-        <Route path="/consultas/:id" exact />
+        <PrivateRoute path="/prontuarios" exact component={() => <></>}/>
+        <PrivateRoute path="/prontuarios/:id" exact component={() => <></>} />
+        <PrivateRoute path="/prontuarios/:id/triagens" exact component={() => <></>} />
+        <PrivateRoute path="/prontuarios/:id/consultas" exact component={() => <></>} />
+        <PrivateRoute path="/consultas" exact component={() => <></>} />
+        <PrivateRoute path="/consultas/:id" exact component={() => <></>} />
         <Route path="/usuarios" exact />
         <Route path="/consultas" exact />
         <PrivateRoute path="/abnerdeus" component={() => <></>} exact/>
