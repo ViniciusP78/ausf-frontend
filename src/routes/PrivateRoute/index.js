@@ -8,7 +8,7 @@ import PrivateLayout from "pages/layouts/Private";
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const auth = useSelector((state) => state.auth);
 
-  return auth.logged || true ? (
+  return auth.logged ? (
     <Route
       {...rest}
       render={(props) => (
@@ -18,7 +18,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
       )}
     ></Route>
   ) : (
-    <Redirect to="/" />
+    <Redirect to="/login" />
   );
 };
 

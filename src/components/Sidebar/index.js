@@ -1,7 +1,6 @@
 import React from "react";
-import { useSelector } from "react-redux";
-
-import { matchPath } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { signOutRequest } from 'store/modules/auth/actions';
 
 import { ReactComponent as ProntuarioIcon } from "assets/icons/clipboard.svg";
 import { ReactComponent as ConsultaIcon } from "assets/icons/clock.svg";
@@ -14,6 +13,8 @@ import useStyles, { RouteButton } from "./styles";
 
 function Sidebar({ open }) {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const user = useSelector((state) => state.auth.user);
@@ -22,6 +23,10 @@ function Sidebar({ open }) {
     setMobileOpen(!mobileOpen);
   };
 
+  const logout = () => {
+    dispatch(signOutRequest());
+  }
+
   return (
     <Drawer
       variant="permanent"
@@ -29,7 +34,7 @@ function Sidebar({ open }) {
       classes={{ paper: classes.sidebar }}
     >
       <div className={classes.header}>
-        <Avatar style={{ width: 64, height: 64, marginRight: 8 }} />
+        <Avatar style={{ width: 64, height: 64, marginRight: 16 }} />
         <div className="name-container">
           <Text
             weight={600}
@@ -55,7 +60,7 @@ function Sidebar({ open }) {
         </RouteButton>
       </div>
 
-      <Button className={classes.logoutButton}>
+      <Button className={classes.logoutButton} onClick={logout}>
         <LogoutIcon />
         Sair
       </Button>

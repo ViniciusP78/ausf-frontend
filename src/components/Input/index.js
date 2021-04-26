@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import masks from 'utils/masks';
 
-import { Container, Label, Field, Error, FieldTextArea } from './styles';
+import { Container, Label, FieldContainer, Field, Error, FieldTextArea } from './styles';
 
 const Input = ({
   type,
@@ -17,6 +17,7 @@ const Input = ({
   fullWidth,
   noBorder,
   variant,
+  icon: Icon,
   ...rest
 }) => {
   const inputRef = useRef(null);
@@ -85,15 +86,19 @@ const Input = ({
           {...inputProps}
         />
       ) : (
-        <Field
-          ref={inputRef}
-          type={type}
-          id={fieldName}
-          name={fieldName}
-          error={!!error}
-          variant={variant}
-          {...inputProps}
-        />
+        <FieldContainer error={error}>
+          <Icon/>
+
+          <Field
+            ref={inputRef}
+            type={type}
+            id={fieldName}
+            name={fieldName}
+            error={!!error}
+            variant={variant}
+            {...inputProps}
+          />
+        </FieldContainer>
       )}
 
       {error && <Error>{error}</Error>}

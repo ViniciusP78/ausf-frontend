@@ -1,20 +1,22 @@
 import React, { useRef } from "react";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 
-import { signInRequest } from 'store/modules/auth/actions';
+import { signInRequest } from "store/modules/auth/actions";
 
-import api from 'api';
-import loginSchema from 'validators/User/login.schema';
-import validate from 'utils/yupValidate';
+import api from "api";
+import loginSchema from "validators/User/login.schema";
+import validate from "utils/yupValidate";
+
+import { ReactComponent as LoginIcon } from "assets/icons/person.svg";
+import { ReactComponent as PasswordIcon } from "assets/icons/password.svg";
 
 import Button from "components/Button";
 import Form from "components/Form";
 import Input from "components/Input";
-import { Container, FormContainer, Title } from "./styles";
+import { Container, FormContainer, GreenSide, Title, Subtitle } from "./styles";
 import { Grid } from "@material-ui/core";
 
 const Login = () => {
-
   const formRef = useRef(null);
 
   const dispatch = useDispatch();
@@ -23,33 +25,44 @@ const Login = () => {
     try {
       const { success, errors } = await validate(loginSchema, authData);
       if (!success) return formRef.current.setErrors(errors);
-      formRef.current.setErrors({ });
+      formRef.current.setErrors({});
 
       dispatch(signInRequest(authData));
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   return (
     <Container>
+      <GreenSide />
+
       <FormContainer>
+        <Title>Bem vindo à USF Digital</Title>
+
+        <Subtitle>Insira suas credenciais para <br/>acessar o sistema</Subtitle>
+
         <Form onSubmit={login} ref={formRef}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <Title>Login</Title>
+              <Input name="login" placeholder="Login" icon={LoginIcon} />
             </Grid>
             <Grid item xs={12}>
-              <Input name="login" placeholder="Login" />
+              <Input
+                name="password"
+                type="password"
+                placeholder="Senha"
+                icon={PasswordIcon}
+              />
             </Grid>
             <Grid item xs={12}>
-              <Input name="password" type="password" placeholder="Senha"/>
-            </Grid>
-            <Grid item xs={12}>
-              <Button fullWidth type="submit">Entrar</Button>
+              <Button fullWidth type="submit" style={{ padding: 12, fontWeight: 500, }}>
+                Entrar
+              </Button>
             </Grid>
           </Grid>
         </Form>
       </FormContainer>
+
+      <GreenSide />
     </Container>
   );
 };
