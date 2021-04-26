@@ -10,31 +10,37 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from "components/Avatar"
 import Box from '@material-ui/core/Box';
 import useStyles from './style';
+import Icon from '@material-ui/core/Icon';
+import ReplyIcon from '@material-ui/icons/Reply';
+import PermContactCalendarIcon from '@material-ui/icons/PermContactCalendar';
+import { Container} from './style';
 
 export default function ImgMediaCard() {
   const classes = useStyles();
 
   return (
-    <Card className={classes.root}>
-        <Box display="flex" alignSelf="center"><Avatar/></Box>
-        <Box>
-            <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-                Lizard
-            </Typography>
-            </CardContent>
-            
+    <Container>
+      <Box width="20%" alignSelf="center">
+       <Avatar/>
+      </Box>
+      <Box width="50%" display="flex" flexDirection="column" alignItems="start" justifyContent="center">
+        <Box component="h2">
+          Nome
         </Box>
-            <CardActions>
-            <Box display="flex" alignSelf="center" flexDirection="column">
-                <Button size="small" className={classes.button}>
-                Visualizar Informações
-                </Button>
-                <Button size="small" disabled={true}>
-                Histórico De Triagens
-                </Button>
-                </Box>
-            </CardActions>
-    </Card>
+        <Box component="p">
+          Nome
+        </Box>
+      </Box>
+      <Box width="30%" display="flex" flexDirection="column" alignItems="flex-end">
+        <Box display="flex" maxWidth="230px" fontWeight="500" height="50%" width="100%" justifyContent="space-around" alignItems="center" border="1px solid #DEDEDE" bgcolor="#EFEFEF">
+          <ReplyIcon className={classes.iconTransform} fontSize="large"/>
+          <Box component="p">ENVIAR PRONTUÁRIOS</Box>
+        </Box>
+        <Box display="flex" maxWidth="230px" fontWeight="500" height="50%" width="100%" justifyContent="space-around" alignItems="center" border="1px solid #DEDEDE" bgcolor="#EFEFEF">
+          <PermContactCalendarIcon fontSize="large"/>
+          <Box component="p">VER PRONTUÁRIO</Box>
+        </Box>
+      </Box>
+    </Container>
   );
 }

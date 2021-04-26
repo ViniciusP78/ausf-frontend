@@ -1,3 +1,7 @@
+// import Button from "components/Button";
+import Card from "components/CardProntuario"
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import SearchBar from "components/Searchbar"
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { signOutRequest } from 'store/modules/auth/actions';
