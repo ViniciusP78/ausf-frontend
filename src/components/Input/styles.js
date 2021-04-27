@@ -115,6 +115,7 @@ export const FieldTextArea = styled.textarea`
 
   padding: 10px;
 
+  border: 2px solid transparent;
   border-radius: 3px;
   transition: border-color 200ms linear;
   resize: none;

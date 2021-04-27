@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useRef } from "react";
+import { useHistory } from 'react-router-dom';
 
 import api from "api";
+import validate from 'utils/yupValidate';
+import createSchema from 'validators/Prontuario/create.schema';
 
 import { ReactComponent as CancelIcon } from "assets/icons/cancel-solid.svg";
 import { ReactComponent as SaveIcon } from "assets/icons/save.svg";
@@ -21,8 +24,16 @@ const Button = ({ style, ...props }) => (
 
 const CadastrarProntuario = () => {
 
+  const history = useHistory();
+
+  const formRef = useRef();
+
   async function submitForm(formData) {
     try {
+      const { success, errors } = await validate(createSchema, formData);
+      console.log(errors)
+      if (!success) return formRef.current.setErrors(errors);
+
       const {
         nome,
         CPF,
@@ -50,7 +61,7 @@ const CadastrarProntuario = () => {
 
   return (
     <Container>
-      <Form onSubmit={submitForm}>
+      <Form onSubmit={submitForm} ref={formRef}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Heading level={2}>Dados do paciente</Heading>
@@ -96,6 +107,7 @@ const CadastrarProntuario = () => {
               backgroundColor="grey"
               color="light"
               style={{ marginRight: 8 }}
+              onClick={() => history.push('/prontuarios')}
             >
               <CancelIcon style={{ marginRight: 8 }} />
               Cancelar

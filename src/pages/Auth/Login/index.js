@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { signInRequest } from "store/modules/auth/actions";
@@ -19,6 +19,8 @@ import { Grid } from "@material-ui/core";
 const Login = () => {
   const formRef = useRef(null);
 
+  const [loading, setLoading] = useState(false);
+
   const dispatch = useDispatch();
 
   async function login(authData) {
@@ -27,8 +29,12 @@ const Login = () => {
       if (!success) return formRef.current.setErrors(errors);
       formRef.current.setErrors({});
 
+      setLoading(true);
       dispatch(signInRequest(authData));
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setTimeout(() => setLoading(false), 2000);
+    }
   }
 
   return (
@@ -38,7 +44,10 @@ const Login = () => {
       <FormContainer>
         <Title>Bem vindo à USF Digital</Title>
 
-        <Subtitle>Insira suas credenciais para <br/>acessar o sistema</Subtitle>
+        <Subtitle>
+          Insira suas credenciais para <br />
+          acessar o sistema
+        </Subtitle>
 
         <Form onSubmit={login} ref={formRef}>
           <Grid container spacing={2}>
@@ -54,7 +63,13 @@ const Login = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <Button fullWidth type="submit" style={{ padding: 12, fontWeight: 500, }}>
+              <Button
+                fullWidth
+                type="submit"
+                loading={loading}
+                disabled={loading}
+                style={{ padding: 12, fontWeight: 500 }}
+              >
                 Entrar
               </Button>
             </Grid>

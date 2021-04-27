@@ -13,7 +13,7 @@ function pascalCaseSplit(str){ return str
 export default function getColor(colorName, theme) {
   try {
     if (!colorName) colorName = "primary";
-    console.log(colorName, theme)
+
     const colors = pascalCaseSplit(colorName).split(' ').map(s => s.toLowerCase());
     let color = theme;
     if (colors.length === 1) return theme[colorName].main;
