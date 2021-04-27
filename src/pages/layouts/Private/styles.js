@@ -10,4 +10,5 @@ export const Container = styled.div`
 export const Content = styled.main`
   flex: 1;
   height: 100%;
+  overflow-y: auto;
 `;
