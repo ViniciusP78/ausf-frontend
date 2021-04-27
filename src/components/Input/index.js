@@ -13,6 +13,7 @@ const Input = ({
   name,
   mask,
   colorLabel,
+  backgroundColor,
   className,
   fullWidth,
   noBorder,
@@ -87,7 +88,7 @@ const Input = ({
         />
       ) : (
         <FieldContainer error={error}>
-          <Icon/>
+          {Icon && <Icon/>}
 
           <Field
             ref={inputRef}
@@ -96,6 +97,7 @@ const Input = ({
             name={fieldName}
             error={!!error}
             variant={variant}
+            backgroundColor={backgroundColor}
             {...inputProps}
           />
         </FieldContainer>
@@ -111,7 +113,6 @@ Input.defaultProps = {
   label: '',
   className: '',
   mask: '',
-  colorLabel: '#FFFFFF',
   noBorder: false,
   width: '',
   fullWidth: true,

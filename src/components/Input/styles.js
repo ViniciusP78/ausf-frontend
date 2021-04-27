@@ -3,10 +3,12 @@ import getColor from "utils/getColor";
 
 export const fieldContainerStyles = css`
   ${({ backgroundColor, color, theme }) => {
-    const bgColor = backgroundColor ? getColor(backgroundColor) : theme.grey.light;
+    const bgColor = backgroundColor
+      ? getColor(backgroundColor)
+      : theme.grey.light;
     const textColor = color ? getColor(color) : theme.grey.main;
 
-    return css `
+    return css`
       background-color: ${bgColor};
       color: ${textColor};
       border-radius: 5px;
@@ -53,16 +55,18 @@ export const FieldContainer = styled.div`
       `;
   }}
 
-  ${({ error, theme }) => error &&  css`
-    max-width: none;
-    border-color: ${theme.error.main};
-  `}
+  ${({ error, theme }) =>
+    error &&
+    css`
+      max-width: none;
+      border-color: ${theme.error.main};
+    `}
 `;
 
 export const Field = styled.input`
   ${inputStyles};
   -webkit-appearance: none;
-
+  background-color: 
   width: 100%;
   font-size: 14px;
 
@@ -101,6 +105,7 @@ export const Field = styled.input`
 
 export const FieldTextArea = styled.textarea`
   ${inputStyles}
+  ${fieldContainerStyles}
   -webkit-appearance: none;
 
   width: 100%;
@@ -112,8 +117,8 @@ export const FieldTextArea = styled.textarea`
 
   border-radius: 3px;
   transition: border-color 200ms linear;
+  resize: none;
 
-  background: #ffffff;
   box-sizing: border-box;
 
   &::placeholder {
@@ -153,8 +158,12 @@ export const Label = styled.label`
   font-weight: 500;
   margin-bottom: 5px;
 
-  color: ${({ theme, error }) =>
-    error ? theme.error.main : theme.grey.light};
+  color: ${({ theme, error, color }) =>
+    error
+      ? theme.error.main
+      : color
+      ? getColor(color, theme)
+      : theme.grey.light};
 `;
 
 export const Error = styled.span`
