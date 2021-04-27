@@ -9,10 +9,10 @@ import { Container } from "./styles";
 const ProntuariosList = () => {
   return (
     <Container>
-      <Box minHeight="100px">
+      <Box marginBottom="30px">
         <Box display="flex">
-          <Button type="submit">
-            <AddCircleIcon />
+          <Button style={{padding:8}}>
+            <AddCircleIcon style={{marginRight:8}}/>
             Adicionar Paciente
           </Button>
         </Box>

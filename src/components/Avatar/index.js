@@ -12,19 +12,19 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   large: {
-    width: theme.spacing(10),
-    height: theme.spacing(10),
+    width: theme.spacing(12),
+    height: theme.spacing(12),
   },
 }));
 
-export default function ImageAvatars(props) {
+export default function ImageAvatars({name, role}) {
   const classes = useStyles();
 
   return (
-    <Box className={classes.root} display="flex" flexDirection="column" alignItems="center">
+    <Box className={classes.root} display="flex" flexDirection="column" alignItems="center" marginY="8px">
         <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" className={classes.large}/>
-        <Username>{props.name}</Username>
-        <Role>{props.role}</Role>
+        {name && <Username>{name}</Username>}
+        {role && <Role>{role}</Role>}
     </Box>
   );
 }

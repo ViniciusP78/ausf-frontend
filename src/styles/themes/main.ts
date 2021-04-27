@@ -16,7 +16,7 @@ const mainTheme =  {
     main: '#B4B4B4',
   },
   border: {
-    main: '#EFEFEF'
+    main: '#EFEFEF',
   },
   error: {
     main: "#EF7F7F",
