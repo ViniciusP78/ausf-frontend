@@ -1,12 +1,16 @@
 import Avatar from "components/Avatar"
+import { useHistory } from 'react-router-dom';
+
 import Box from '@material-ui/core/Box';
 import useStyles from './style';
 import { Container, Button} from './style';
 import { ReactComponent as ArrowSend } from 'assets/icons/arrow-send.svg';
 import { ReactComponent as ClipBoard } from 'assets/icons/clipboard.svg';
+import ButtonMui from '@material-ui/core/Button';
 
 export default function ImgMediaCard({prontuario}) {
   const classes = useStyles();
+  const history = useHistory();
 
   return (
     <Container>
@@ -25,12 +29,16 @@ export default function ImgMediaCard({prontuario}) {
       </Box>
       <Box display="flex" flexDirection="column" alignItems="flex-end" width="30%" maxWidth="240px" minWidth="180px">
         <Button>
-          <ArrowSend className={classes.colorSecondary} width="40px" height="40px"/>
-          <Box component="p" className={classes.colorSecondary}>ENVIAR PRONTUÁRIO</Box>
+          <ButtonMui variant="contained" className={classes.buttonMui}>
+            <ArrowSend className={classes.colorSecondary} width="40px" height="40px"/>
+            <Box component="p" className={classes.colorSecondary}>ENVIAR PRONTUÁRIO</Box>
+          </ButtonMui>
         </Button>
-        <Button>
-          <ClipBoard className={classes.colorSecondary} width="30px" height="30px"/>
-          <Box component="p" className={classes.colorSecondary}>VER PRONTUÁRIO</Box>
+        <Button onClick={() => history.push(`/prontuarios/${prontuario.id}`)}>
+          <ButtonMui variant="contained" className={classes.buttonMui}>
+            <ClipBoard className={classes.colorSecondary} width="30px" height="30px"/>
+            <Box component="p" className={classes.colorSecondary}>VER PRONTUÁRIO</Box>
+          </ButtonMui>
         </Button>
       </Box>
     </Container>
