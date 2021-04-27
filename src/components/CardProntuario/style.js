@@ -21,6 +21,9 @@ export const Container = styled.div`
   min-height:100px;
   justify-content:space-between;
   overflow:hidden;
+  &:not(:last-child){
+    margin-bottom:18px
+  }
 `;
 export const Button = styled.div`
   display:flex;
