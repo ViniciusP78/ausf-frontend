@@ -25,7 +25,7 @@ const ProntuariosList = () => {
       setLoading(false);
     }
   }
-  
+
   useEffect(() => {
     listProntuarios();
   }, []);
@@ -36,9 +36,7 @@ const ProntuariosList = () => {
         <Box display="flex">
           <Button
             style={{ padding: 8 }}
-            onClick={() =>
-              history.push("/prontuarios/5b105d3c-f76d-4a4d-8788-4e52d9bfec25")
-            }
+            onClick={() => history.push("/prontuarios/novo")}
           >
             <AddCircleIcon style={{ marginRight: 8 }} />
             Adicionar Paciente
