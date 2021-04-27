@@ -10,6 +10,7 @@ export default makeStyles((theme) => ({
     borderRight: "none",
     boxShadow: '-2px 0px 20px rgba(0, 0, 0, 0.20)',
     position: 'relative',
+    zIndex: 9,
   },
 
   header: {
