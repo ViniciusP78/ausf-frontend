@@ -5,21 +5,21 @@ import { Container, Button} from './style';
 import { ReactComponent as ArrowSend } from 'assets/icons/arrow-send.svg';
 import { ReactComponent as ClipBoard } from 'assets/icons/clipboard.svg';
 
-export default function ImgMediaCard() {
+export default function ImgMediaCard({prontuario}) {
   const classes = useStyles();
 
   return (
     <Container>
       <Box display="flex">
       <Box alignSelf="center" paddingX="16px">
-       <Avatar/>
+       <Avatar nameAlt={prontuario.paciente.nome}/>
       </Box>
       <Box display="flex" flexDirection="column" alignItems="start" marginTop="20px" marginX="20px">
         <Box component="h2" className={classes.colorSecondary}>
-          Nome
+          {prontuario.paciente.nome}
         </Box>
         <Box component="p" className={classes.colorSecondary}>
-          Nome
+          {prontuario.paciente.logradouro}
         </Box>
       </Box>
       </Box>
