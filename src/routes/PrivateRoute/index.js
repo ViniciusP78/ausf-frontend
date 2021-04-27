@@ -7,7 +7,7 @@ import PrivateLayout from "pages/layouts/Private";
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const auth = useSelector((state) => state.auth);
-
+  console.log("aaaaa", auth.logged)
   return auth.logged ? (
     <Route
       {...rest}
