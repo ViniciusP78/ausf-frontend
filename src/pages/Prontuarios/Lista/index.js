@@ -13,10 +13,10 @@ const ProntuariosList = () => {
 
   return (
     <Container>
-      <Box minHeight="100px">
+      <Box marginBottom="30px">
         <Box display="flex">
-          <Button type="submit" onClick={() => history.push('/prontuarios/novo')}>
-            <AddCircleIcon />
+          <Button style={{padding:8}} onClick={() => history.push('/prontuarios/novo')}>
+            <AddCircleIcon style={{marginRight:8}}/>
             Adicionar Paciente
           </Button>
         </Box>

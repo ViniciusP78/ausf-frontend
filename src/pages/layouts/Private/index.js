@@ -15,7 +15,9 @@ const PrivateLayout = ({ children }) => {
     <Container>
       <Sidebar/>
       <Content>
-        <SearchBar placeholder="Pesquise por nome ou CPF" titulo="Pesquisar"/>
+        <Box>
+          <SearchBar placeholder="Pesquise por nome ou CPF" titulo="Prontuários"/>
+        </Box>
 
         {children}
       </Content>

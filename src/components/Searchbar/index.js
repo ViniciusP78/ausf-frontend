@@ -8,27 +8,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import DirectionsIcon from '@material-ui/icons/Directions';
 import Box from '@material-ui/core/Box';
 import { Container} from './style';
-// import useStyles from './style';
+import useStyles from './style';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: '2px 4px',
-    display: 'flex',
-    alignItems: 'center',
-    width: '100%',
-  },
-  input: {
-    marginLeft: theme.spacing(1),
-    flex: 1,
-  },
-  iconButton: {
-    padding: 10,
-  },
-  divider: {
-    height: 28,
-    margin: 4,
-  },
-}));
 
 export default function CustomizedInputBase({ onSearch, titulo, placeholder }) {
   const classes = useStyles(); 
@@ -42,8 +23,8 @@ export default function CustomizedInputBase({ onSearch, titulo, placeholder }) {
   }
 
   return (
-    <Container width="100%">
-        <Box component="h1"fontWeight="500" marginRight="2rem">
+    <Container>
+        <Box component="h2" className={classes.title}>
             {titulo}
         </Box>
       <Paper component="form" className={classes.root}>
