@@ -55,7 +55,7 @@ const CadastrarProntuario = () => {
       const { data: novoPaciente } = await api.post("/pacientes", paciente);
 
       const prontuario = { paciente_id: novoPaciente.id, observacoes };
-      // const { data: novoProntuario } = await api.post('/prontuarios', prontuario);
+      const { data: novoProntuario } = await api.post('/prontuarios', prontuario);
     } catch (error) {}
   }
 

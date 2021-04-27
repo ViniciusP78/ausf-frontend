@@ -32,8 +32,8 @@ const Login = () => {
       setLoading(true);
       dispatch(signInRequest(authData));
     } catch (error) {
+      setLoading(false);
     } finally {
-      setTimeout(() => setLoading(false), 2000);
     }
   }
 

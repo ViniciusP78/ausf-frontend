@@ -32,7 +32,7 @@ const ProntuariosList = () => {
           </Button>
         </Box>
       </Box>
-      {prontuarios?.map((prontuario)=>(<Card prontuario={prontuario}/>))}
+      {prontuarios?.map((prontuario)=>(<Card prontuario={prontuario} />))}
     </Container>
   );
 };
