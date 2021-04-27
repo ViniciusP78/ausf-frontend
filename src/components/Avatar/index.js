@@ -17,12 +17,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ImageAvatars({name, role}) {
+export default function ImageAvatars({name, role, nameAlt}) {
   const classes = useStyles();
 
   return (
     <Box className={classes.root} display="flex" flexDirection="column" alignItems="center" marginY="8px">
-        <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" className={classes.large}/>
+        <Avatar alt={nameAlt} src="/static/images/avatar/1.jpg" className={classes.large}/>
         {name && <Username>{name}</Username>}
         {role && <Role>{role}</Role>}
     </Box>
