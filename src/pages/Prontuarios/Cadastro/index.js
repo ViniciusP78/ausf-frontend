@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import { useHistory } from 'react-router-dom';
+import React, { useRef, useState, useEffect } from "react";
+import { useHistory, useParams } from 'react-router-dom';
 
 import api from "api";
 import validate from 'utils/yupValidate';
@@ -26,7 +26,29 @@ const CadastrarProntuario = () => {
 
   const history = useHistory();
 
+  const { id } = useParams();
+
   const formRef = useRef();
+
+  const [loading, setLoading] = useState(false);
+  const [prontuario, setProntuario] = useState();
+
+  async function getProntuario() {
+    try {
+      setLoading(true);
+      const { data } = await api.get(`/prontuarios/${id}`);
+      formRef.current.setData(data.paciente);
+      formRef.current.setFieldValue('observacoes', data.observacoes)
+      setProntuario(data);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    if (id) getProntuario();
+  }, [id]);
 
   async function submitForm(formData) {
     try {
@@ -51,11 +73,17 @@ const CadastrarProntuario = () => {
         sexo: "M",
         cidade_nascimento,
       };
+      if(id){
+        await api.put(`/pacientes/${prontuario.paciente_id}`, paciente);
+        const prontuario = { observacoes };
+        await api.put(`/prontuarios/${id}`, prontuario);
+      }else{
+        const { data: novoPaciente } = await api.post("/pacientes", paciente);
 
-      const { data: novoPaciente } = await api.post("/pacientes", paciente);
-
-      const prontuario = { paciente_id: novoPaciente.id, observacoes };
-      const { data: novoProntuario } = await api.post('/prontuarios', prontuario);
+        const prontuario = { paciente_id: novoPaciente.id, observacoes };
+        const { data: novoProntuario } = await api.post('/prontuarios', prontuario);
+      }
+      
     } catch (error) {}
   }
 

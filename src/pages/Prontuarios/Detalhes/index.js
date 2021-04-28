@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 
 import api from "api";
-
+import Button from "components/Button";
 import Field from "./InputField";
 import { Grid, CircularProgress } from "@material-ui/core";
 import { Container } from "./styles";
@@ -61,8 +61,17 @@ const ProntuariosList = () => {
             <Field label="Logradouro" value={prontuario?.paciente.logradouro} />
           </Grid>
           <Grid item xs={12} sm={4}>
-            <Field label="Data de nascimento" value={prontuario?.paciente.nome} />
+            <Field label="Data de nascimento" value={prontuario?.paciente.data_nascimento} />
           </Grid>
+          <Grid item xs={12} >
+          <Button
+            style={{ padding: 8 }}
+            onClick={() => history.push(`/prontuarios/edit/${prontuario.id}`)}
+          >
+            Editar prontuário
+          </Button>
+          </Grid>
+          
         </>)}
       </Grid>
     </Container>
