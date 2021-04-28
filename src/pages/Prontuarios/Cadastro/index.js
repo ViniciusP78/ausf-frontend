@@ -1,9 +1,9 @@
-import React, { useRef } from "react";
-import { useHistory } from 'react-router-dom';
+import React, { useRef, useState, useEffect } from "react";
+import { useHistory, useParams } from "react-router-dom";
 
 import api from "api";
-import validate from 'utils/yupValidate';
-import createSchema from 'validators/Prontuario/create.schema';
+import validate from "utils/yupValidate";
+import createSchema from "validators/Prontuario/create.schema";
 
 import { ReactComponent as CancelIcon } from "assets/icons/cancel-solid.svg";
 import { ReactComponent as SaveIcon } from "assets/icons/save.svg";
@@ -23,15 +23,35 @@ const Button = ({ style, ...props }) => (
 );
 
 const CadastrarProntuario = () => {
-
   const history = useHistory();
 
+  const { id } = useParams();
+
   const formRef = useRef();
+
+  const [loading, setLoading] = useState(false);
+  const [prontuario, setProntuario] = useState();
+
+  async function getProntuario() {
+    try {
+      setLoading(true);
+      const { data } = await api.get(`/prontuarios/${id}`);
+      formRef.current.setData(data.paciente);
+      formRef.current.setFieldValue("observacoes", data.observacoes);
+      setProntuario(data);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    if (id) getProntuario();
+  }, [id]);
 
   async function submitForm(formData) {
     try {
       const { success, errors } = await validate(createSchema, formData);
-      console.log(errors)
       if (!success) return formRef.current.setErrors(errors);
 
       const {
@@ -46,17 +66,27 @@ const CadastrarProntuario = () => {
       const paciente = {
         nome,
         CPF,
-        data_nascimento,
+        data_nascimento: new Date(),
         nome_mae,
         sexo: "M",
         cidade_nascimento,
       };
 
-      const { data: novoPaciente } = await api.post("/pacientes", paciente);
+      if (id) {
+        await api.put(`/pacientes/${prontuario.paciente_id}`, paciente);
+        const prontuarioForm = { observacoes };
+        await api.put(`/prontuarios/${id}`, prontuarioForm);
+      } else {
+        const { data: novoPaciente } = await api.post("/pacientes", paciente);
 
-      const prontuario = { paciente_id: novoPaciente.id, observacoes };
-      const { data: novoProntuario } = await api.post('/prontuarios', prontuario);
-    } catch (error) {}
+        const prontuario = { paciente_id: novoPaciente.id, observacoes };
+        await api.post("/prontuarios", prontuario);
+      }
+
+      history.push('/prontuarios');
+    } catch (error) {
+      console.log("zz", error);
+    }
   }
 
   return (
@@ -77,14 +107,18 @@ const CadastrarProntuario = () => {
           <Grid item xs={4}>
             <Input name="CPF" label="CPF do paciente" />
           </Grid>
-          <Grid item xs={4}>
-            <Input
-              name="data_nascimento"
-              label="Data de nascimento"
-              type="date"
-            />
-          </Grid>
-          <Grid item xs={4}></Grid>
+          {!id && (
+            <>
+              <Grid item xs={4}>
+                <Input
+                  name="data_nascimento"
+                  label="Data de nascimento"
+                  type="date"
+                />
+              </Grid>
+              <Grid item xs={4}></Grid>
+            </>
+          )}
 
           <Grid item xs={4}>
             <Input name="cidade_nascimento" label="Cidade de nascimento" />
@@ -107,7 +141,7 @@ const CadastrarProntuario = () => {
               backgroundColor="grey"
               color="light"
               style={{ marginRight: 8 }}
-              onClick={() => history.push('/prontuarios')}
+              onClick={() => history.push("/prontuarios")}
             >
               <CancelIcon style={{ marginRight: 8 }} />
               Cancelar
@@ -115,7 +149,7 @@ const CadastrarProntuario = () => {
 
             <Button type="submit">
               <SaveIcon style={{ marginRight: 8 }} />
-              Finalizar cadastro
+              Finalizar {id ? 'edição' : 'cadastro'}
             </Button>
           </Grid>
         </Grid>
