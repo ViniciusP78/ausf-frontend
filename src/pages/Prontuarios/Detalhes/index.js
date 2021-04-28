@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { openConfirmation } from 'store/modules/confirmation/actions';
 
 import api from "api";
 
+import { ReactComponent as Trash } from 'assets/icons/trash.svg';
+
 import Field from "./InputField";
+import Button from "components/Button";
 import { Grid, CircularProgress } from "@material-ui/core";
 import { Container } from "./styles";
 
 const ProntuariosList = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
   const [prontuario, setProntuario] = useState();
@@ -25,6 +31,20 @@ const ProntuariosList = () => {
     } finally {
       setLoading(false);
     }
+  }
+
+  async function deleteProntuario() {
+    try {
+      await api.delete(`/prontuarios/${id}`);
+      history.push('/prontuarios');
+    } catch (error) {}
+  }
+
+  function confirmDeletion() {
+    dispatch(openConfirmation({
+      content: 'Deseja mesmo remover esse prontuário ?',
+      onYes: deleteProntuario,
+    }))
   }
 
   useEffect(() => {
@@ -62,6 +82,12 @@ const ProntuariosList = () => {
           </Grid>
           <Grid item xs={12} sm={4}>
             <Field label="Data de nascimento" value={prontuario?.paciente.nome} />
+          </Grid>
+          <Grid item xs={12}>
+            <Button backgroundColor="error" onClick={confirmDeletion}>
+              <Trash style={{ marginRight: 8 }}/>
+              Deletar
+            </Button>
           </Grid>
         </>)}
       </Grid>
