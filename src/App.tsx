@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import Routes from "./routes";
 
@@ -11,9 +11,11 @@ import {
   ThemeProvider as MuiThemeProvider,
   createMuiTheme,
 } from "@material-ui/core";
+
 import { ThemeProvider } from "styled-components";
 
 function App() {
+
   return (
     <ThemeProvider theme={mainTheme}>
       <MuiThemeProvider theme={createMuiTheme({ palette: mainTheme as any })}>

@@ -8,6 +8,7 @@ export const Container = styled.div`
 `;
 
 export const Content = styled.main`
+  background-color: ${({ theme }) => theme.background.light};
   flex: 1;
   height: 100%;
   overflow-y: auto;
