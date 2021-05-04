@@ -9,11 +9,14 @@ import { signOutRequest } from "store/modules/auth/actions";
 import { ReactComponent as ProntuarioIcon } from "assets/icons/clipboard.svg";
 import { ReactComponent as ConsultaIcon } from "assets/icons/clock.svg";
 import { ReactComponent as LogoutIcon } from "assets/icons/logout.svg";
+import { ReactComponent as GroupIcon } from "assets/icons/group.svg";
 
 import Text from "components/Text";
 import { Avatar, Drawer, Button } from "@material-ui/core";
 
 import useStyles, { RouteButton } from "./styles";
+
+const cargos = ["Administrador", "Médico", "Enfermeiro", "Recepcionista"];
 
 function Sidebar({ open }) {
   const classes = useStyles();
@@ -22,7 +25,7 @@ function Sidebar({ open }) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const user = useSelector((state) => state.auth.user);
-
+  console.log(user);
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -46,7 +49,7 @@ function Sidebar({ open }) {
             {user?.name}
           </Text>
           <Text size="14px" weight={500} color="light" transform="uppercase">
-            Recepcionista
+            {cargos[user.cargo_id - 1]}
           </Text>
         </div>
       </div>
@@ -58,6 +61,9 @@ function Sidebar({ open }) {
         <RouteButton to="/consultas">
           <ConsultaIcon /> Consultas
         </RouteButton>
+        {user.cargo_id === 2 && <RouteButton to="/fila">
+          <GroupIcon /> Fila
+        </RouteButton>}
       </div>
 
       <Button className={classes.logoutButton} onClick={logout}>

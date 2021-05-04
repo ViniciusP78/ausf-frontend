@@ -4,6 +4,7 @@ import storage from 'redux-persist/lib/storage';
 
 import auth from './auth/reducer';
 import confirmation from './confirmation/reducer';
+import alert from './alert/reducer';
 
 const authConfig = {
   key: 'auth',
@@ -14,4 +15,5 @@ const authConfig = {
 export default combineReducers({
   auth: persistReducer(authConfig, auth),
   confirmation,
+  alert,
 });
