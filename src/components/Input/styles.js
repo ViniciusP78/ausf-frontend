@@ -28,6 +28,7 @@ export const inputStyles = css`
 
 export const Container = styled.div`
   width: 100%;
+  cursor: text;
 
   ${({ fullWidth }) => {
     if (fullWidth)

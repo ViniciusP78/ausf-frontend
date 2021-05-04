@@ -36,6 +36,10 @@ export default makeStyles(theme => ({
 
     '&:last-child': {
       borderRadius: '0 5px 5px 0',
+    },
+
+    '& *': {
+      pointerEvents: 'none',
     }
   },
 }));

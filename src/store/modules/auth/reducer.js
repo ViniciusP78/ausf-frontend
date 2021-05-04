@@ -1,4 +1,3 @@
-import { flushSync } from "react-dom";
 
 const INITIAL_STATE = {
   token: null,

@@ -5,18 +5,21 @@ import api from "api";
 
 import { ReactComponent as InfoIcon } from "assets/icons/info.svg";
 import { ReactComponent as ArrowSendIcon } from "assets/icons/arrow-send.svg";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 
-import Box from "@material-ui/core/Box";
+import ModalEnvio from "./ModalEnvio";
+
 import Button from "components/Button";
 import Card from "components/CardProntuario";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
 import Text from "components/Text";
 import { Grid, CircularProgress, Button as MuiButton } from "@material-ui/core";
 import SearchBar from 'components/Searchbar';
 
 import useStyles, { Container, Content } from "./styles";
 
-const TableLabel = (props) => <Text color="grey" weight={500} size="15px" {...props} />;
+const TableLabel = (props) => (
+  <Text color="grey" weight={500} size="15px" {...props} />
+);
 
 const TableText = (props) => <Text color="dark" weight={400} {...props} />;
 
@@ -26,6 +29,8 @@ const ProntuariosList = () => {
 
   const [loading, setLoading] = useState(false);
   const [prontuarios, setProntuarios] = useState();
+  const [selectedProntuario, setSelectedProntuario] = useState();
+  const [anchor, setAnchor] = useState(null);
 
   async function listProntuarios(formData) {
     try {
@@ -36,6 +41,11 @@ const ProntuariosList = () => {
     } finally {
       setLoading(false);
     }
+  }
+
+  function handleClose() {
+    setSelectedProntuario(null);
+    setAnchor(null);
   }
 
   useEffect(() => {
@@ -106,7 +116,13 @@ const ProntuariosList = () => {
                 >
                   <InfoIcon />
                 </MuiButton>
-                <MuiButton className={classes.actionButton}>
+                <MuiButton
+                  className={classes.actionButton}
+                  onClick={(e) => {
+                    setAnchor(e.target);
+                    setSelectedProntuario(prontuario);
+                  }}
+                >
                   <ArrowSendIcon />
                 </MuiButton>
               </Grid>
