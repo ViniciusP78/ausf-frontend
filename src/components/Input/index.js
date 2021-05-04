@@ -1,11 +1,18 @@
-import React, { useRef, useEffect, useCallback } from 'react';
+import React, { useRef, useEffect, useCallback } from "react";
 
-import { useField } from '@unform/core';
-import PropTypes from 'prop-types';
+import { useField } from "@unform/core";
+import PropTypes from "prop-types";
 
-import masks from 'utils/masks';
+import masks from "utils/masks";
 
-import { Container, Label, FieldContainer, Field, Error, FieldTextArea } from './styles';
+import {
+  Container,
+  Label,
+  FieldContainer,
+  Field,
+  Error,
+  FieldTextArea,
+} from "./styles";
 
 const Input = ({
   type,
@@ -31,7 +38,7 @@ const Input = ({
       registerField({
         name: fieldName,
         ref: inputRef.current,
-        path: 'value',
+        path: "value",
         getValue: (ref) => (mask ? masks.unmask(ref.value) : ref.value),
         setValue: (ref, value) => {
           if (mask && value) ref.value = masks[mask](value);
@@ -47,7 +54,7 @@ const Input = ({
       e.persist();
 
       if (mask) {
-        if (!masks[mask]) throw new Error('Máscara não definida');
+        if (!masks[mask]) throw new Error("Máscara não definida");
 
         const { value } = e.target;
         inputRef.current.value = masks[mask](value);
@@ -70,13 +77,17 @@ const Input = ({
   };
 
   return (
-    <Container className={`root-input ${className}`} fullWidth={fullWidth}>
+    <Container
+      className={`root-input ${className}`}
+      fullWidth={fullWidth}
+      onClick={() => inputRef.current.focus()}
+    >
       {label && (
         <Label htmlFor={fieldName} color={colorLabel} error={error}>
           {label}
         </Label>
       )}
-      {type === 'textarea' ? (
+      {type === "textarea" ? (
         <FieldTextArea
           ref={inputRef}
           type={type}
@@ -88,7 +99,7 @@ const Input = ({
         />
       ) : (
         <FieldContainer error={error}>
-          {Icon && <Icon/>}
+          {Icon && <Icon />}
 
           <Field
             ref={inputRef}
@@ -109,14 +120,14 @@ const Input = ({
 };
 
 Input.defaultProps = {
-  type: 'text',
-  label: '',
-  className: '',
-  mask: '',
+  type: "text",
+  label: "",
+  className: "",
+  mask: "",
   noBorder: false,
-  width: '',
+  width: "",
   fullWidth: true,
-  variant: '',
+  variant: "",
 };
 
 Input.propTypes = {
