@@ -9,10 +9,11 @@ import DirectionsIcon from '@material-ui/icons/Directions';
 import Box from '@material-ui/core/Box';
 import { Container} from './style';
 import useStyles from './style';
+import { useRef } from 'react';
 
-
-export default function CustomizedInputBase({ onSearch, titulo, placeholder }) {
+export default function CustomizedInputBase({ onSearch, titulo, placeholder, search }) {
   const classes = useStyles(); 
+  const inputRef = useRef();
 
   const handleEnter = (e) => {
     e.persist();
@@ -28,11 +29,12 @@ export default function CustomizedInputBase({ onSearch, titulo, placeholder }) {
             {titulo}
         </Box>
       <Paper component="form" className={classes.root}>
-        <IconButton onKeyPress={handleEnter} className={classes.iconButton} aria-label="search">
+        <IconButton onKeyPress={handleEnter} className={classes.iconButton} aria-label="search" onClick={() => search('', inputRef.current.value)}>
             <SearchIcon />
         </IconButton>
         <InputBase
             className={classes.input}
+            inputRef={inputRef}
             placeholder={placeholder}
             inputProps={{ 'aria-label': placeholder }}
         />

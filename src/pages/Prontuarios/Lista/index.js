@@ -33,17 +33,19 @@ const ProntuariosList = () => {
   const history = useHistory();
   const classes = useStyles();
 
+  const user = useSelector(state => state.auth.user);
+
   const [loading, setLoading] = useState(false);
   const [prontuarios, setProntuarios] = useState();
   const [selectedProntuario, setSelectedProntuario] = useState();
   const [anchor, setAnchor] = useState(null);
 
-  const user = useSelector((state) => state.auth.user);
-
-  async function listProntuarios(formData) {
+  async function listProntuarios(formData, search) {
     try {
       setLoading(true);
-      const { data } = await api.get("/prontuarios");
+      const { data } = await api.get(
+        search ? "/prontuarios?search=".concat(search) : "/prontuarios"
+      );
       setProntuarios(data);
     } catch (error) {
     } finally {
@@ -72,21 +74,24 @@ const ProntuariosList = () => {
         <SearchBar
           placeholder="Pesquise por nome ou CPF"
           titulo="Prontuários"
+          search={listProntuarios}
         />
       </Box>
 
       <Content>
-        {user.cargo_id === 4 && <Box marginBottom="30px">
-          <Box display="flex">
-            <Button
-              style={{ padding: "12px 16px" }}
-              onClick={() => history.push("/prontuarios/novo")}
-            >
-              <AddCircleIcon style={{ marginRight: 8 }} />
-              Adicionar Paciente
-            </Button>
+        {user.cargo_id === 4 && (
+          <Box marginBottom="30px">
+            <Box display="flex">
+              <Button
+                style={{ padding: "12px 16px" }}
+                onClick={() => history.push("/prontuarios/novo")}
+              >
+                <AddCircleIcon style={{ marginRight: 8 }} />
+                Adicionar Paciente
+              </Button>
+            </Box>
           </Box>
-        </Box>}
+        )}
         <Box width="100%" display="flex" justifyContent="center">
           {loading && <CircularProgress />}
         </Box>
