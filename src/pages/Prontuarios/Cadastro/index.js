@@ -13,8 +13,10 @@ import GenericInput from "components/Input";
 import Form from "components/Form";
 import GenericButton from "components/Button";
 import { Heading } from "components/Text";
+import SearchBar from 'components/Searchbar';
+import Box from '@material-ui/core/Box';
 
-import { Container } from "./styles";
+import { Container, Content } from "./styles";
 
 const Input = (props) => <GenericInput {...props} colorLabel="grey" />;
 
@@ -91,69 +93,74 @@ const CadastrarProntuario = () => {
 
   return (
     <Container>
-      <Form onSubmit={submitForm} ref={formRef}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Heading level={2}>Dados do paciente</Heading>
-          </Grid>
-          <Grid item xs={4}>
-            <Input name="nome" label="Nome completo" />
-          </Grid>
-          <Grid item xs={4}>
-            <Input name="nome_mae" label="Nome da mãe" />
-          </Grid>
-          <Grid item xs={4}></Grid>
+      <Box position="sticky" top="0" zIndex="10">
+        <SearchBar placeholder="Pesquise por nome ou CPF" titulo="Prontuários"/>
+      </Box>
+      <Content>
+        <Form onSubmit={submitForm} ref={formRef}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Heading level={2}>Dados do paciente</Heading>
+            </Grid>
+            <Grid item xs={4}>
+              <Input name="nome" label="Nome completo" />
+            </Grid>
+            <Grid item xs={4}>
+              <Input name="nome_mae" label="Nome da mãe" />
+            </Grid>
+            <Grid item xs={4}></Grid>
 
-          <Grid item xs={4}>
-            <Input name="CPF" label="CPF do paciente" />
-          </Grid>
-          {!id && (
-            <>
-              <Grid item xs={4}>
-                <Input
-                  name="data_nascimento"
-                  label="Data de nascimento"
-                  type="date"
-                />
-              </Grid>
-              <Grid item xs={4}></Grid>
-            </>
-          )}
+            <Grid item xs={4}>
+              <Input name="CPF" label="CPF do paciente" />
+            </Grid>
+            {!id && (
+              <>
+                <Grid item xs={4}>
+                  <Input
+                    name="data_nascimento"
+                    label="Data de nascimento"
+                    type="date"
+                  />
+                </Grid>
+                <Grid item xs={4}></Grid>
+              </>
+            )}
 
-          <Grid item xs={4}>
-            <Input name="cidade_nascimento" label="Cidade de nascimento" />
-          </Grid>
+            <Grid item xs={4}>
+              <Input name="cidade_nascimento" label="Cidade de nascimento" />
+            </Grid>
 
-          <Grid item xs={12} style={{ marginTop: 48 }}>
-            <Heading level={2}>Outras informações</Heading>
-          </Grid>
-          <Grid item xs={12}>
-            <Input
-              type="textarea"
-              name="observacoes"
-              label="Observações"
-              rows={4}
-            />
-          </Grid>
+            <Grid item xs={12} style={{ marginTop: 48 }}>
+              <Heading level={2}>Outras informações</Heading>
+            </Grid>
+            <Grid item xs={12}>
+              <Input
+                type="textarea"
+                name="observacoes"
+                label="Observações"
+                rows={4}
+              />
+            </Grid>
 
-          <Grid item xs={12}>
-            <Button
-              backgroundColor="grey"
-              color="light"
-              style={{ marginRight: 8 }}
-              onClick={() => history.push("/prontuarios")}
-            >
-              <CancelIcon style={{ marginRight: 8 }} />
-              Cancelar
-            </Button>
+            <Grid item xs={12}>
+              <Button
+                backgroundColor="grey"
+                color="light"
+                style={{ marginRight: 8 }}
+                onClick={() => history.push("/prontuarios")}
+              >
+                <CancelIcon style={{ marginRight: 8 }} />
+                Cancelar
+              </Button>
 
-            <Button type="submit">
-              <SaveIcon style={{ marginRight: 8 }} />
-              Finalizar {id ? 'edição' : 'cadastro'}
-            </Button>
+              <Button type="submit">
+                <SaveIcon style={{ marginRight: 8 }} />
+                Finalizar {id ? 'edição' : 'cadastro'}
+              </Button>
+            </Grid>
           </Grid>
-        </Grid>
-      </Form>
+        </Form>
+      </Content>
     </Container>
   );
 };

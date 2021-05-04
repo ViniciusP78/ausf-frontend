@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
+  display:flex;
+  flex-direction:column;
+`;
+export const Content = styled.div`
   padding: 48px 24px;
   display:flex;
 `;
