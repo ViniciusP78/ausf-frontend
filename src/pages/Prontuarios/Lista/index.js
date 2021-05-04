@@ -12,14 +12,10 @@ import ModalEnvio from "./ModalEnvio";
 import Button from "components/Button";
 import Card from "components/CardProntuario";
 import Text from "components/Text";
-import {
-  Grid,
-  CircularProgress,
-  Button as MuiButton,
-  Box,
-} from "@material-ui/core";
+import { Grid, CircularProgress, Button as MuiButton } from "@material-ui/core";
+import SearchBar from 'components/Searchbar';
 
-import useStyles, { Container } from "./styles";
+import useStyles, { Container, Content } from "./styles";
 
 const TableLabel = (props) => (
   <Text color="grey" weight={500} size="15px" {...props} />
@@ -58,25 +54,26 @@ const ProntuariosList = () => {
 
   return (
     <Container>
-      <ModalEnvio anchor={anchor} onClose={handleClose} prontuario={selectedProntuario}/>
-
-      <Box marginBottom="30px">
-        <Box display="flex">
-          <Button
-            style={{ padding: "12px 16px" }}
-            onClick={() => history.push("/prontuarios/novo")}
-          >
-            <AddCircleIcon style={{ marginRight: 8 }} />
-            Adicionar Paciente
-          </Button>
+      <Box position="sticky" top="0" zIndex="10">
+        <SearchBar placeholder="Pesquise por nome ou CPF" titulo="Prontuários"/>
+      </Box>
+      <Content>
+        <Box marginBottom="30px">
+          <Box display="flex">
+            <Button
+              style={{ padding: "12px 16px" }}
+              onClick={() => history.push("/prontuarios/novo")}
+            >
+              <AddCircleIcon style={{ marginRight: 8 }} />
+              Adicionar Paciente
+            </Button>
+          </Box>
         </Box>
-      </Box>
-      <Box width="100%" display="flex" justifyContent="center">
-        {loading && <CircularProgress />}
-      </Box>
+        <Box width="100%" display="flex" justifyContent="center">
+          {loading && <CircularProgress />}
+        </Box>
 
-      {!loading && (
-        <Grid container>
+        {!loading && <Grid container>
           <Grid container style={{ paddingLeft: 16, marginBottom: 16 }}>
             <Grid item sm={3}>
               <TableLabel>Nome do paciente</TableLabel>
@@ -131,8 +128,8 @@ const ProntuariosList = () => {
               </Grid>
             </Grid>
           ))}
-        </Grid>
-      )}
+        </Grid>}
+      </Content>
     </Container>
   );
 };
