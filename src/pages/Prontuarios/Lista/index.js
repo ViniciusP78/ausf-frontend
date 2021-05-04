@@ -74,7 +74,7 @@ const ProntuariosList = () => {
         <SearchBar
           placeholder="Pesquise por nome ou CPF"
           titulo="Prontuários"
-          search={listProntuarios}
+          onSearch={listProntuarios}
         />
       </Box>
 
