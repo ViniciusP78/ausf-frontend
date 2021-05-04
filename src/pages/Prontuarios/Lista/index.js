@@ -14,7 +14,7 @@ import Card from "components/CardProntuario";
 import Text from "components/Text";
 import { Grid, CircularProgress, Button as MuiButton } from "@material-ui/core";
 import SearchBar from 'components/Searchbar';
-
+import Box from '@material-ui/core/Box';
 import useStyles, { Container, Content } from "./styles";
 
 const TableLabel = (props) => (
@@ -32,10 +32,10 @@ const ProntuariosList = () => {
   const [selectedProntuario, setSelectedProntuario] = useState();
   const [anchor, setAnchor] = useState(null);
 
-  async function listProntuarios(formData) {
+  async function listProntuarios(formData, search) {
     try {
       setLoading(true);
-      const { data } = await api.get("/prontuarios");
+      const { data } = await api.get(search ? "/prontuarios?search=".concat(search) : '/prontuarios');
       setProntuarios(data);
     } catch (error) {
     } finally {
@@ -55,7 +55,7 @@ const ProntuariosList = () => {
   return (
     <Container>
       <Box position="sticky" top="0" zIndex="10">
-        <SearchBar placeholder="Pesquise por nome ou CPF" titulo="Prontuários"/>
+        <SearchBar placeholder="Pesquise por nome ou CPF" titulo="Prontuários" search={listProntuarios}/>
       </Box>
       <Content>
         <Box marginBottom="30px">

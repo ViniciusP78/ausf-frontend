@@ -14,6 +14,7 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 import Text from "components/Text";
 import { Grid, CircularProgress, Button as MuiButton } from "@material-ui/core";
 import SearchBar from 'components/Searchbar';
+import Dialog from "components/Dialog"
 
 import useStyles, { Container, Content } from "./styles";
 
@@ -67,13 +68,7 @@ const ConsultasList = () => {
                 </Grid>
             </Grid>
             <Box display="flex">
-            <Button
-                style={{ padding: "12px 16px" }}
-                onClick={() => history.push("/consulta/novo")}
-            >
-                <AddCircleIcon style={{ marginRight: 8 }} />
-                Agendar  Consulta
-            </Button>
+                <Dialog/>
             </Box>
         </Box>
         <Box width="100%" display="flex" justifyContent="center">
