@@ -8,8 +8,6 @@ import { ReactComponent as InfoIcon } from "assets/icons/info.svg";
 import { ReactComponent as ArrowSendIcon } from "assets/icons/arrow-send.svg";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 
-import ModalEnvio from "./ModalEnvio";
-
 import Button from "components/Button";
 import Card from "components/CardProntuario";
 import Text from "components/Text";
@@ -29,31 +27,30 @@ const TableLabel = (props) => (
 
 const TableText = (props) => <Text color="dark" weight={400} {...props} />;
 
-const ProntuariosList = () => {
+const Fila = () => {
   const history = useHistory();
   const classes = useStyles();
 
   const [loading, setLoading] = useState(false);
   const [prontuarios, setProntuarios] = useState();
-  const [selectedProntuario, setSelectedProntuario] = useState();
-  const [anchor, setAnchor] = useState(null);
+
+  const fila = JSON.parse(localStorage.getItem("fila"));
 
   const user = useSelector((state) => state.auth.user);
 
-  async function listProntuarios(formData) {
+  async function listProntuarios() {
+    const prontuariosRetornados = [];
+
     try {
-      setLoading(true);
-      const { data } = await api.get("/prontuarios");
-      setProntuarios(data);
+      for (const prontuarioId of fila) {
+        const { data } = await api.get(`/prontuarios/${prontuarioId}`);
+        prontuariosRetornados.push(data);
+      }
+      setProntuarios(prontuariosRetornados);
     } catch (error) {
     } finally {
       setLoading(false);
     }
-  }
-
-  function handleClose() {
-    setSelectedProntuario(null);
-    setAnchor(null);
   }
 
   useEffect(() => {
@@ -62,31 +59,14 @@ const ProntuariosList = () => {
 
   return (
     <Container>
-      <ModalEnvio
-        anchor={anchor}
-        prontuario={selectedProntuario}
-        onClose={handleClose}
-      />
-
       <Box position="sticky" top="0" zIndex="10">
         <SearchBar
           placeholder="Pesquise por nome ou CPF"
-          titulo="Prontuários"
+          titulo="Fila"
         />
       </Box>
 
       <Content>
-        {user.cargo_id === 4 && <Box marginBottom="30px">
-          <Box display="flex">
-            <Button
-              style={{ padding: "12px 16px" }}
-              onClick={() => history.push("/prontuarios/novo")}
-            >
-              <AddCircleIcon style={{ marginRight: 8 }} />
-              Adicionar Paciente
-            </Button>
-          </Box>
-        </Box>}
         <Box width="100%" display="flex" justifyContent="center">
           {loading && <CircularProgress />}
         </Box>
@@ -137,17 +117,6 @@ const ProntuariosList = () => {
                   >
                     <InfoIcon />
                   </MuiButton>
-                  {user.cargo_id === 4 && (
-                    <MuiButton
-                      className={classes.actionButton}
-                      onClick={(e) => {
-                        setAnchor(e.target);
-                        setSelectedProntuario(prontuario);
-                      }}
-                    >
-                      <ArrowSendIcon />
-                    </MuiButton>
-                  )}
                 </Grid>
               </Grid>
             ))}
@@ -158,4 +127,4 @@ const ProntuariosList = () => {
   );
 };
 
-export default ProntuariosList;
+export default Fila;

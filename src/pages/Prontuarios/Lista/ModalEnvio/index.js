@@ -15,17 +15,18 @@ import { Menu } from "@material-ui/core";
 import useStyles from "./styles";
 
 const debouncedSearch = debounce(async (search) => {
-  return api.get(`users?cargo=2&filter=${search}`);
+  return api.get(`users?cargo=2&search=${search}`);
 }, 400);
 
 const ModalEnvio = ({ anchor, prontuario, ...rest }) => {
   const classes = useStyles();
 
   const [clients, setClients] = useState();
+  const [selectedMedico, setSelectedMedico] = useState(null);
 
   async function getUsers() {
     try {
-      const { data } = await api.get("/users");
+      const { data } = await api.get("/users?cargo=2");
       setClients(data);
     } catch (error) {}
   }
@@ -33,7 +34,7 @@ const ModalEnvio = ({ anchor, prontuario, ...rest }) => {
   async function sendProntuario() {
     socket.emit("enviarProntuario", {
       prontuario: prontuario.id,
-      medico: "e8176008-7911-486f-86e1-e81d64513048",
+      medico: selectedMedico.id,
     });
   }
 
@@ -42,7 +43,7 @@ const ModalEnvio = ({ anchor, prontuario, ...rest }) => {
     // setLoadingSearch(true);
     const { data } = await debouncedSearch(e.target.value);
 
-    setClients(data.data);
+    setClients(data);
     // setLoadingSearch(false);
   }
 
@@ -72,6 +73,7 @@ const ModalEnvio = ({ anchor, prontuario, ...rest }) => {
             autoComplete="off"
             onInputChange={search}
             filterOptions={(options, state) => options}
+            onChange={(e, value) => setSelectedMedico(value)}
           />
           <Button fullWidth style={{ marginTop: 12 }} onClick={sendProntuario}>
             Enviar prontuário
