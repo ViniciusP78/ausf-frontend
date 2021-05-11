@@ -14,6 +14,7 @@ export default makeStyles((theme) => ({
   },
 
   header: {
+    height: 102,
     padding: "16px 24px",
     display: "flex",
     alignItems: "center",

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { openConfirmation } from "store/modules/confirmation/actions";
 
 import api from "api";
 
 import { ReactComponent as InfoIcon } from "assets/icons/info.svg";
 import { ReactComponent as FilterIcon } from "assets/icons/filter.svg";
-import { ReactComponent as ArrowSendIcon } from "assets/icons/arrow-send.svg";
+import { ReactComponent as TrashIcon } from "assets/icons/trash.svg";
 import { ReactComponent as AddCircleIcon } from "assets/icons/add-circle.svg";
 
 import ModalConsulta from "components/Modal/Consulta";
@@ -34,6 +36,7 @@ const TableText = (props) => <Text color="dark" weight={400} {...props} />;
 const ConsultasList = () => {
   const history = useHistory();
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
   const [consultas, setConsultas] = useState();
@@ -48,6 +51,22 @@ const ConsultasList = () => {
     } finally {
       setLoading(false);
     }
+  }
+
+  async function deleteConsulta(idConsulta) {
+    try {
+      const { data } = await api.delete(`consultas/${idConsulta}`);
+      listConsultas();
+    } catch (error) {}
+  }
+
+  function confirmDeletion(idConsulta) {
+    dispatch(
+      openConfirmation({
+        onYes: async () => await deleteConsulta(idConsulta),
+        content: "Deseja cancelar essa consulta ?",
+      })
+    );
   }
 
   useEffect(() => {
@@ -127,20 +146,22 @@ const ConsultasList = () => {
                   <Grid item sm={4}>
                     <TableText>{consulta?.prontuario.paciente.nome}</TableText>
                   </Grid>
-                  <Grid item sm={2}>
+                  <Grid item sm={3}>
                     <TableText>
-                      {format(new Date(consulta?.data_agendada), "dd/MM/yyyy hh:mm")}
+                      {format(
+                        new Date(consulta?.data_agendada),
+                        "dd/MM/yyyy hh:mm"
+                      )}
                     </TableText>
                   </Grid>
-                  <Grid item sm={2}></Grid>
-                  {/* <Grid item sm={2}>
+                  <Grid item sm={2}>
                     <MuiButton
                       className={classes.actionButton}
-                      onClick={() => history.push(`/consultas/${consulta.id}`)}
+                      onClick={() => confirmDeletion(consulta.id)}
                     >
-                      <InfoIcon />
+                      <TrashIcon />
                     </MuiButton>
-                  </Grid> */}
+                  </Grid>
                 </Grid>
               ))}
             </Grid>

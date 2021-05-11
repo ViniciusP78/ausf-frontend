@@ -61,7 +61,7 @@ const ProntuariosList = () => {
   return (
     <Container>
       <Box position="sticky" top="0" zIndex="10">
-        <SearchBar placeholder="Pesquise por nome ou CPF" titulo="Prontuários"/>
+        <SearchBar backRoute="/prontuarios" titulo="Prontuários"/>
       </Box>
       <Content>
         <Grid container>
@@ -127,14 +127,14 @@ const ProntuariosList = () => {
                   <Trash style={{ marginRight: 8 }} />
                   Deletar
                 </Button>
-                <Button
+                {/* <Button
                   style={{ padding: 8 }}
                   onClick={() =>
                     history.push()
                   }
                 >
                   Realizar triagem
-                </Button>
+                </Button> */}
               </Grid>
             </>
           )}

@@ -37,6 +37,7 @@ const Routes = () => {
         <PrivateRoute path="/prontuarios/:id" exact component={DetalhesProntuario} />
         <PrivateRoute path="/prontuarios/:id/triagens" exact component={() => <></>} />
         <PrivateRoute path="/prontuarios/:id/consultas" exact component={() => <></>} />
+        
         <PrivateRoute path="/usuarios" exact component={UsuariosList} />
         <PrivateRoute path="/usuarios/novo" exact component={CadastrarUsuario} />
         <PrivateRoute path="/usuarios/:id" exact component={DetalhesUsuario} />

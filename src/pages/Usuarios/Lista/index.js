@@ -75,7 +75,7 @@ const UsuariosList = () => {
       <Box position="sticky" top="0" zIndex="10">
         <SearchBar
           placeholder="Pesquise por nome ou CPF"
-          titulo="Prontuários"
+          titulo="Usuários"
           onSearch={listUsuarios}
         />
       </Box>
@@ -101,23 +101,23 @@ const UsuariosList = () => {
         {!loading && (
           <Grid container>
             <Grid container style={{ paddingLeft: 16, marginBottom: 16 }}>
-              <Grid item sm={2}>
+              <Grid item sm={4}>
                 <TableLabel>Nome</TableLabel>
               </Grid>
               <Grid item sm={2}>
-                <TableLabel>login</TableLabel>
+                <TableLabel>Login</TableLabel>
               </Grid>
               <Grid item sm={2}>
                 <TableLabel>Cargo</TableLabel>
               </Grid>
-              <Grid item sm={3}>
+              <Grid item sm={2}>
                 <TableLabel>Status</TableLabel>
               </Grid>
             </Grid>
 
             {usuarios?.map((usuario) => (
               <Grid container className={classes.usuarioItem}>
-                <Grid item sm={2}>
+                <Grid item sm={4}>
                   <TableText>
                     {usuario.name}
                   </TableText>
@@ -132,7 +132,7 @@ const UsuariosList = () => {
                     {cargos[usuario.cargo_id - 1]}
                   </TableText>
                 </Grid>
-                <Grid item sm={3}>
+                <Grid item sm={2}>
                   <TableText>
                     {usuario.status ? 'Ativo': 'Inativo'}
                   </TableText>

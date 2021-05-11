@@ -61,7 +61,7 @@ const UsuariosList = () => {
   return (
     <Container>
       <Box position="sticky" top="0" zIndex="10">
-        <SearchBar placeholder="Pesquise por nome ou login" titulo="Usuários"/>
+        <SearchBar backRoute="/usuarios" titulo="Usuários"/>
       </Box>
       <Content>
         <Grid container>
