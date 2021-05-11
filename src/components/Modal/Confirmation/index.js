@@ -47,8 +47,8 @@ function ConfirmationModal() {
           </ModalContent>
 
           <ModalControls>
-            <Button backgroundColor="error" onClick={handleYes}>Sim</Button>
-            <Button backgroundColor="gray" onClick={close}>Não</Button>
+            <Button backgroundColor="error" color="light" onClick={handleYes}>Sim</Button>
+            <Button backgroundColor="gray" color="grey" onClick={close}>Não</Button>
           </ModalControls>
           </Modal>
       </Container>

@@ -82,7 +82,7 @@ export const Button = styled.button`
   flex: 1;
 
   cursor: pointer;
-  color: white;
+  color: ${({ color, theme }) => getColor(color, theme)};;
   font-size: 16px;
   font-weight: 500;
 
