@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { openConfirmation } from "store/modules/confirmation/actions";
 
 import api from "api";
 
 import { ReactComponent as InfoIcon } from "assets/icons/info.svg";
 import { ReactComponent as FilterIcon } from "assets/icons/filter.svg";
-import { ReactComponent as ArrowSendIcon } from "assets/icons/arrow-send.svg";
+import { ReactComponent as TrashIcon } from "assets/icons/trash.svg";
 import { ReactComponent as AddCircleIcon } from "assets/icons/add-circle.svg";
 
 import ModalConsulta from "components/Modal/Consulta";
@@ -17,11 +19,12 @@ import {
   CircularProgress,
   Button as MuiButton,
   Box,
+  ButtonBase,
 } from "@material-ui/core";
 import SearchBar from "components/Searchbar";
 import Dialog from "components/Dialog";
 
-import useStyles, { Container, Content } from "./styles";
+import useStyles, { Container, Content, DateButton } from "./styles";
 
 import { format } from "date-fns";
 
@@ -34,15 +37,21 @@ const TableText = (props) => <Text color="dark" weight={400} {...props} />;
 const ConsultasList = () => {
   const history = useHistory();
   const classes = useStyles();
+  const dispatch = useDispatch();
+
+  const today = useRef(new Date());
 
   const [loading, setLoading] = useState(false);
   const [consultas, setConsultas] = useState();
   const [modalOpen, setModalOpen] = useState(false);
 
-  async function listConsultas(formData) {
+  const [dateFilter, setDateFilter] = useState(today.current);
+
+
+  async function listConsultas() {
     try {
       setLoading(true);
-      const { data } = await api.get("/consultas");
+      const { data } = await api.get("/consultas", { params: { data: dateFilter }});
       setConsultas(data);
     } catch (error) {
     } finally {
@@ -50,13 +59,33 @@ const ConsultasList = () => {
     }
   }
 
+  async function deleteConsulta(idConsulta) {
+    try {
+      const { data } = await api.delete(`consultas/${idConsulta}`);
+      listConsultas();
+    } catch (error) {}
+  }
+
+  function confirmDeletion(idConsulta) {
+    dispatch(
+      openConfirmation({
+        onYes: async () => await deleteConsulta(idConsulta),
+        content: "Deseja cancelar essa consulta ?",
+      })
+    );
+  }
+
   useEffect(() => {
     listConsultas();
-  }, []);
+  }, [dateFilter]);
 
   return (
     <>
-      <ModalConsulta open={modalOpen} onClose={() => setModalOpen(false)} />
+      <ModalConsulta
+        onSubmit={listConsultas}
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+      />
 
       <Container>
         <Box position="sticky" top="0" zIndex="10">
@@ -77,14 +106,21 @@ const ConsultasList = () => {
                   <FilterIcon className={classes.filterIcon} />
                 </TableLabel>
               </Grid>
-              <Grid item sm={2} className={classes.consultaOfDay}>
-                <TableLabel>Consultas do dia</TableLabel>
+              <Grid item sm={2} style={{ padding: 0 }}>
+                <DateButton
+                  active={dateFilter?.getTime() === today.current.getTime()}
+                  onClick={() => setDateFilter(today.current)}
+                >
+                  Consultas do dia
+                </DateButton>
               </Grid>
-              <Grid item sm={7}>
-                <TableLabel>Todas consultas</TableLabel>
-              </Grid>
-              <Grid item sm={2}>
-                <TableLabel>Filtrar por data</TableLabel>
+              <Grid item sm={2} style={{ padding: 0 }}>
+                <DateButton
+                  active={dateFilter === null}
+                  onClick={() => setDateFilter(null)}
+                >
+                  Todas consultas
+                </DateButton>
               </Grid>
             </Grid>
             <Box display="flex">
@@ -107,14 +143,11 @@ const ConsultasList = () => {
                 <Grid item sm={3}>
                   <TableLabel>Nome do médico</TableLabel>
                 </Grid>
-                <Grid item sm={3}>
+                <Grid item sm={4}>
                   <TableLabel>Nome do paciente</TableLabel>
                 </Grid>
                 <Grid item sm={2}>
                   <TableLabel>Data agendada</TableLabel>
-                </Grid>
-                <Grid item sm={2}>
-                  <TableLabel>Status</TableLabel>
                 </Grid>
               </Grid>
 
@@ -123,23 +156,23 @@ const ConsultasList = () => {
                   <Grid item sm={3}>
                     <TableText>{consulta?.medico.name}</TableText>
                   </Grid>
-                  <Grid item sm={3}>
+                  <Grid item sm={4}>
                     <TableText>{consulta?.prontuario.paciente.nome}</TableText>
                   </Grid>
-                  <Grid item sm={2}>
+                  <Grid item sm={3}>
                     <TableText>
-                      {format(new Date(consulta?.data_agendada), "dd/MM/yyyy")}
+                      {format(
+                        new Date(consulta?.data_agendada),
+                        "dd/MM/yyyy hh:mm"
+                      )}
                     </TableText>
-                  </Grid>
-                  <Grid item sm={2}>
-                    <TableText>{consulta?.status}</TableText>
                   </Grid>
                   <Grid item sm={2}>
                     <MuiButton
                       className={classes.actionButton}
-                      onClick={() => history.push(`/consultas/${consulta.id}`)}
+                      onClick={() => confirmDeletion(consulta.id)}
                     >
-                      <InfoIcon />
+                      <TrashIcon />
                     </MuiButton>
                   </Grid>
                 </Grid>

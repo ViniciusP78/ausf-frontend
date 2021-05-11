@@ -1,21 +1,20 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import InputBase from "@material-ui/core/InputBase";
-import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
+import React, { useRef } from "react";
+import { useHistory } from "react-router-dom";
+
 import SearchIcon from "@material-ui/icons/Search";
-import DirectionsIcon from "@material-ui/icons/Directions";
-import Box from "@material-ui/core/Box";
+import { ReactComponent as BackIcon } from "assets/icons/arrow-back.svg";
+
+import { Box, IconButton, InputBase, Paper } from "@material-ui/core";
 import { Container } from "./style";
 import useStyles from "./style";
-import { useRef } from "react";
 
 export default function CustomizedInputBase({
   onSearch,
   titulo,
   placeholder,
+  backRoute,
 }) {
+  const history = useHistory();
   const classes = useStyles();
   const inputRef = useRef();
 
@@ -29,25 +28,35 @@ export default function CustomizedInputBase({
 
   return (
     <Container>
+      {backRoute && (
+        <BackIcon
+          onClick={() => history.push(backRoute)}
+          className={classes.backButton}
+        />
+      )}
+
       <Box component="h2" className={classes.title}>
         {titulo}
       </Box>
-      <Paper component="form" className={classes.root}>
-        <IconButton
-          className={classes.iconButton}
-          aria-label="search"
-          onClick={() => onSearch("", inputRef.current.value)}
-        >
-          <SearchIcon />
-        </IconButton>
-        <InputBase
-          className={classes.input}
-          inputRef={inputRef}
-          placeholder={placeholder}
-          inputProps={{ "aria-label": placeholder }}
-          onKeyPress={handleEnter}
-        />
-      </Paper>
+
+      {!backRoute && (
+        <Paper component="form" className={classes.searchbarContainer}>
+          <IconButton
+            className={classes.iconButton}
+            aria-label="search"
+            onClick={() => onSearch("", inputRef.current.value)}
+          >
+            <SearchIcon />
+          </IconButton>
+          <InputBase
+            className={classes.input}
+            inputRef={inputRef}
+            placeholder={placeholder}
+            inputProps={{ "aria-label": placeholder }}
+            onKeyPress={handleEnter}
+          />
+        </Paper>
+      )}
     </Container>
   );
 }

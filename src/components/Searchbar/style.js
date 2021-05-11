@@ -3,12 +3,6 @@ import styled from 'styled-components';
 
 
 export default makeStyles((theme) => ({
-  root: {
-    padding: '2px 4px',
-    display: 'flex',
-    alignItems: 'center',
-    width: '100%',
-  },
   input: {
     marginLeft: theme.spacing(1),
     flex: 1,
@@ -25,18 +19,34 @@ export default makeStyles((theme) => ({
     fontWeight:700,  
     marginRight:'2rem',
     alignSelf:'center',  
+  },
+
+  searchbarContainer: {
+    backgroundColor: theme.palette.grey.light,
+    boxShadow: 'none',
+    padding: '2px 4px',
+    display: 'flex',
+    alignItems: 'center',
+    width: '100%',
+  },
+
+  backButton: {
+    cursor: 'pointer',
+    marginRight: 24,
   }
 }));
 
 export const Container = styled.div`
   background-color: ${({ theme }) => theme.light.main};
   z-index: 10;
+  
   display:flex;
-  flex-direction:row;
+  align-items: center;
+
   box-shadow: 0px 4px 10px rgba(0, 218, 113, 0.2);
   padding:25px;
   width:100%;
-  height:98px;
+  height:102px;
   border-bottom: 2px solid ${({theme}) => (theme.primary.main)};
 `;
 

@@ -9,7 +9,7 @@ import { ReactComponent as Trash } from "assets/icons/trash.svg";
 
 import Field from "./InputField";
 import Button from "components/Button";
-import { Grid, CircularProgress } from "@material-ui/core";
+import { Grid, CircularProgress, Dialog } from "@material-ui/core";
 import { Container, Content } from "./styles";
 import SearchBar from 'components/Searchbar';
 import Box from '@material-ui/core/Box';
@@ -22,6 +22,7 @@ const ProntuariosList = () => {
 
   const [loading, setLoading] = useState(false);
   const [prontuario, setProntuario] = useState();
+  const [modalOpen, setModal] = useState(false);
 
   const { id } = useParams();
 
@@ -60,7 +61,7 @@ const ProntuariosList = () => {
   return (
     <Container>
       <Box position="sticky" top="0" zIndex="10">
-        <SearchBar placeholder="Pesquise por nome ou CPF" titulo="Prontuários"/>
+        <SearchBar backRoute="/prontuarios" titulo="Prontuários"/>
       </Box>
       <Content>
         <Grid container>
@@ -122,10 +123,18 @@ const ProntuariosList = () => {
                 >
                   Editar prontuário
                 </Button>
-                <Button style={{ padding: 8 }} backgroundColor="error" onClick={confirmDeletion}>
+                <Button style={{ padding: 8, marginRight: 8  }} backgroundColor="error" onClick={confirmDeletion}>
                   <Trash style={{ marginRight: 8 }} />
                   Deletar
                 </Button>
+                {/* <Button
+                  style={{ padding: 8 }}
+                  onClick={() =>
+                    history.push()
+                  }
+                >
+                  Realizar triagem
+                </Button> */}
               </Grid>
             </>
           )}

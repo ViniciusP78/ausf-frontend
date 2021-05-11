@@ -15,6 +15,12 @@ import Fila from 'pages/Fila';
 //Consultas
 import ConsultasList from 'pages/Consultas/Lista';
 
+
+//Usuarios
+import UsuariosList from 'pages/Usuarios/Lista';
+import DetalhesUsuario from 'pages/Usuarios/Detalhes';
+import CadastrarUsuario from 'pages/Usuarios/Cadastro';
+
 import AuthRoute from './AuthRoute';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
@@ -31,6 +37,12 @@ const Routes = () => {
         <PrivateRoute path="/prontuarios/:id" exact component={DetalhesProntuario} />
         <PrivateRoute path="/prontuarios/:id/triagens" exact component={() => <></>} />
         <PrivateRoute path="/prontuarios/:id/consultas" exact component={() => <></>} />
+        
+        <PrivateRoute path="/usuarios" exact component={UsuariosList} />
+        <PrivateRoute path="/usuarios/novo" exact component={CadastrarUsuario} />
+        <PrivateRoute path="/usuarios/:id" exact component={DetalhesUsuario} />
+        <PrivateRoute path="/usuarios/edit/:id" exact component={CadastrarUsuario} />
+        
 
         <PrivateRoute path="/consultas" exact component={ConsultasList} />
 
