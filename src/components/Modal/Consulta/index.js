@@ -19,16 +19,18 @@ const debouncedPatientSearch = debounce(async (search) => {
   return api.get(`prontuarios?search=${search}`);
 }, 400);
 
-const ModalConsulta = ({ ...props }) => {
+const ModalConsulta = ({ onClose, onSubmit, ...props }) => {
   const classes = useStyles();
 
   const [step, setStep] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const [medics, setMedics] = useState();
   const [patients, setPatients] = useState();
 
   const [date, setDate] = useState();
   const [selectedMedico, setSelectedMedico] = useState(null);
+  const [selectedPatient, setSelectedPatient] = useState(null);
 
   async function getUsers() {
     try {
@@ -40,7 +42,7 @@ const ModalConsulta = ({ ...props }) => {
   async function getPatients() {
     try {
       const { data } = await api.get("/prontuarios");
-      setMedics(data);
+      setPatients(data);
     } catch (error) {}
   }
 
@@ -55,7 +57,27 @@ const ModalConsulta = ({ ...props }) => {
     e.persist();
     const { data } = await debouncedPatientSearch(e.target.value);
 
-    setMedics(data);
+    setPatients(data);
+  }
+
+  async function submit() {
+    try {
+      const consulta = {
+        data_agendada: date,
+        prontuario_id: selectedPatient.id,
+        medico_id: selectedMedico.id,
+      };
+
+      setLoading(true);
+
+      await api.post("/consultas", consulta);
+
+      onClose();
+      onSubmit();
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -63,8 +85,12 @@ const ModalConsulta = ({ ...props }) => {
     getPatients();
   }, []);
 
+  useEffect(() => {
+    console.log(selectedMedico);
+  }, [selectedMedico]);
+
   return (
-    <Dialog classes={{ paper: classes.modal }} {...props}>
+    <Dialog onClose={onClose} classes={{ paper: classes.modal }} {...props}>
       {step === 0 && (
         <>
           <p className={classes.title}>Data e horário</p>
@@ -75,7 +101,7 @@ const ModalConsulta = ({ ...props }) => {
             placeholderText="Selecione uma data"
             selected={date}
             onChange={(date) => setDate(date)}
-            style={{ marginBottom: 32 }}
+            style={{ marginBottom: 32, width: '100%' }}
             dateFormat="dd/MM/yyyy hh:mm"
           />
 
@@ -105,7 +131,7 @@ const ModalConsulta = ({ ...props }) => {
               filterOptions={(options, state) => options}
               onChange={(e, value) => setSelectedMedico(value)}
               fullWidth
-              style={{ marginBottom: 12 }}
+              style={{ marginBottom: 24 }}
             />
 
             <Autocomplete
@@ -118,13 +144,17 @@ const ModalConsulta = ({ ...props }) => {
               autoComplete="off"
               onInputChange={searchPatients}
               filterOptions={(options, state) => options}
-              onChange={(e, value) => setSelectedMedico(value)}
+              onChange={(e, value) => setSelectedPatient(value)}
               fullWidth
             />
           </Form>
 
-          <Button fullWidth onClick={() => setStep(step + 1)}>
-            Continuar
+          <Button
+            fullWidth
+            loading={loading}
+            onClick={() => (step === 0 ? setStep(1) : submit())}
+          >
+            {step === 1 ? "Agendar Consulta" : "Continuar"}
           </Button>
         </>
       )}

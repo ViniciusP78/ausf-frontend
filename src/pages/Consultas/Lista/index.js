@@ -56,7 +56,11 @@ const ConsultasList = () => {
 
   return (
     <>
-      <ModalConsulta open={modalOpen} onClose={() => setModalOpen(false)} />
+      <ModalConsulta
+        onSubmit={listConsultas}
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+      />
 
       <Container>
         <Box position="sticky" top="0" zIndex="10">
@@ -107,14 +111,11 @@ const ConsultasList = () => {
                 <Grid item sm={3}>
                   <TableLabel>Nome do médico</TableLabel>
                 </Grid>
-                <Grid item sm={3}>
+                <Grid item sm={4}>
                   <TableLabel>Nome do paciente</TableLabel>
                 </Grid>
                 <Grid item sm={2}>
                   <TableLabel>Data agendada</TableLabel>
-                </Grid>
-                <Grid item sm={2}>
-                  <TableLabel>Status</TableLabel>
                 </Grid>
               </Grid>
 
@@ -123,25 +124,23 @@ const ConsultasList = () => {
                   <Grid item sm={3}>
                     <TableText>{consulta?.medico.name}</TableText>
                   </Grid>
-                  <Grid item sm={3}>
+                  <Grid item sm={4}>
                     <TableText>{consulta?.prontuario.paciente.nome}</TableText>
                   </Grid>
                   <Grid item sm={2}>
                     <TableText>
-                      {format(new Date(consulta?.data_agendada), "dd/MM/yyyy")}
+                      {format(new Date(consulta?.data_agendada), "dd/MM/yyyy hh:mm")}
                     </TableText>
                   </Grid>
-                  <Grid item sm={2}>
-                    <TableText>{consulta?.status}</TableText>
-                  </Grid>
-                  <Grid item sm={2}>
+                  <Grid item sm={2}></Grid>
+                  {/* <Grid item sm={2}>
                     <MuiButton
                       className={classes.actionButton}
                       onClick={() => history.push(`/consultas/${consulta.id}`)}
                     >
                       <InfoIcon />
                     </MuiButton>
-                  </Grid>
+                  </Grid> */}
                 </Grid>
               ))}
             </Grid>
