@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { openConfirmation } from "store/modules/confirmation/actions";
@@ -19,11 +19,12 @@ import {
   CircularProgress,
   Button as MuiButton,
   Box,
+  ButtonBase,
 } from "@material-ui/core";
 import SearchBar from "components/Searchbar";
 import Dialog from "components/Dialog";
 
-import useStyles, { Container, Content } from "./styles";
+import useStyles, { Container, Content, DateButton } from "./styles";
 
 import { format } from "date-fns";
 
@@ -38,14 +39,19 @@ const ConsultasList = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
+  const today = useRef(new Date());
+
   const [loading, setLoading] = useState(false);
   const [consultas, setConsultas] = useState();
   const [modalOpen, setModalOpen] = useState(false);
 
-  async function listConsultas(formData) {
+  const [dateFilter, setDateFilter] = useState(today.current);
+
+
+  async function listConsultas() {
     try {
       setLoading(true);
-      const { data } = await api.get("/consultas");
+      const { data } = await api.get("/consultas", { params: { data: dateFilter }});
       setConsultas(data);
     } catch (error) {
     } finally {
@@ -71,7 +77,7 @@ const ConsultasList = () => {
 
   useEffect(() => {
     listConsultas();
-  }, []);
+  }, [dateFilter]);
 
   return (
     <>
@@ -100,14 +106,21 @@ const ConsultasList = () => {
                   <FilterIcon className={classes.filterIcon} />
                 </TableLabel>
               </Grid>
-              <Grid item sm={2} className={classes.consultaOfDay}>
-                <TableLabel>Consultas do dia</TableLabel>
+              <Grid item sm={2} style={{ padding: 0 }}>
+                <DateButton
+                  active={dateFilter?.getTime() === today.current.getTime()}
+                  onClick={() => setDateFilter(today.current)}
+                >
+                  Consultas do dia
+                </DateButton>
               </Grid>
-              <Grid item sm={7}>
-                <TableLabel>Todas consultas</TableLabel>
-              </Grid>
-              <Grid item sm={2}>
-                <TableLabel>Filtrar por data</TableLabel>
+              <Grid item sm={2} style={{ padding: 0 }}>
+                <DateButton
+                  active={dateFilter === null}
+                  onClick={() => setDateFilter(null)}
+                >
+                  Todas consultas
+                </DateButton>
               </Grid>
             </Grid>
             <Box display="flex">

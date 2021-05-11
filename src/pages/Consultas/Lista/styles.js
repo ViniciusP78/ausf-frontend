@@ -1,5 +1,6 @@
-import { makeStyles } from '@material-ui/core';
-import styled from 'styled-components';
+import { makeStyles, Button } from '@material-ui/core';
+import styled, { css } from 'styled-components';
+import { darken } from 'polished';
 
 export default makeStyles(theme => ({
   consultaItem: {
@@ -40,6 +41,7 @@ export default makeStyles(theme => ({
       }
     },
   },
+
   consultaOfDay:{
     backgroundColor: theme.palette.primary.main,
     maxWidth:'150px',
@@ -49,6 +51,7 @@ export default makeStyles(theme => ({
       color:theme.palette.light.main,
     }
   },
+
   actionButton: {
     backgroundColor: theme.palette.grey.light,
     height: '100%',
@@ -79,4 +82,25 @@ export const Content = styled.div`
   display: flex;
   flex-direction: column;
   padding:24px;
+`;
+
+export const DateButton = styled(Button)`
+  height: 100%;
+  width: 100%;
+  text-transform: none;
+  border-radius: 0px;
+  color: ${({ theme }) => theme.grey.main};
+
+  ${({ active, theme }) => active && css`
+    background-color: ${theme.primary.main};
+    color: ${theme.primary.main};
+
+    span { color: ${theme.light.main}; }
+
+    :hover {
+      background-color: ${darken(0.05, theme.primary.main)};
+      span { color: ${theme.light.main}; }
+    }
+  `}
+
 `;

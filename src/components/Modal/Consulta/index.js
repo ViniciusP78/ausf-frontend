@@ -32,6 +32,16 @@ const ModalConsulta = ({ onClose, onSubmit, ...props }) => {
   const [selectedMedico, setSelectedMedico] = useState(null);
   const [selectedPatient, setSelectedPatient] = useState(null);
 
+  function closeModal() {
+    setStep(0);
+    setSelectedMedico(null)
+    setSelectedPatient(null);
+    setDate(null);
+
+    onClose();
+    onSubmit();
+  }
+
   async function getUsers() {
     try {
       const { data } = await api.get("/users?cargo=2");
@@ -72,8 +82,7 @@ const ModalConsulta = ({ onClose, onSubmit, ...props }) => {
 
       await api.post("/consultas", consulta);
 
-      onClose();
-      onSubmit();
+      closeModal();
     } catch (error) {
     } finally {
       setLoading(false);
@@ -101,7 +110,7 @@ const ModalConsulta = ({ onClose, onSubmit, ...props }) => {
             placeholderText="Selecione uma data"
             selected={date}
             onChange={(date) => setDate(date)}
-            style={{ marginBottom: 32, width: '100%' }}
+            style={{ marginBottom: 32, width: "100%" }}
             dateFormat="dd/MM/yyyy hh:mm"
           />
 
