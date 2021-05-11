@@ -50,7 +50,7 @@ const CadastrarUsuario = () => {
     try {
       setLoading(true);
       const { data } = await api.get(`/users/${id}`);
-      formRef.current.setData(data.usuario);
+      formRef.current.setData(data);
       setUsuario(data);
     } catch (error) {
     } finally {
@@ -82,17 +82,25 @@ const CadastrarUsuario = () => {
         password,
       };
       if (id) {
-        await api.put(`/users/${usuario.id}`, usuario);
+        await api.put(`/users/${usuario.id}`, usuarioData);
+        dispatch(
+            openAlert({
+              message: "Usuário atualizado",
+              severity: "success",
+              duration: 5000,
+            })
+          );
       } else {
         const { data: novoUsuario } = await api.post("/users", usuarioData);
+        dispatch(
+            openAlert({
+              message: "Novo usuário recebido",
+              severity: "success",
+              duration: 5000,
+            })
+          );
       }
-      dispatch(
-        openAlert({
-          message: "Novo usuário recebido",
-          severity: "success",
-          duration: 5000,
-        })
-      );
+      
       history.push('/usuarios');
     } catch (error) {
       console.log("zz", error);
@@ -113,7 +121,7 @@ const CadastrarUsuario = () => {
   return (
     <Container>
       <Box position="sticky" top="0" zIndex="10">
-        <SearchBar placeholder="Pesquise por nome ou CPF" titulo="Prontuários"/>
+        <SearchBar placeholder="Pesquise por nome ou login" titulo="Usuários"/>
       </Box>
       <Content>
         <Form onSubmit={submitForm} ref={formRef}>
@@ -158,7 +166,7 @@ const CadastrarUsuario = () => {
                 backgroundColor="grey"
                 color="light"
                 style={{ marginRight: 8 }}
-                onClick={() => history.push("/users")}
+                onClick={() => history.push("/usuarios")}
               >
                 <CancelIcon style={{ marginRight: 8 }} />
                 Cancelar
