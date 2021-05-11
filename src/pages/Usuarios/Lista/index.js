@@ -74,7 +74,7 @@ const UsuariosList = () => {
 
       <Box position="sticky" top="0" zIndex="10">
         <SearchBar
-          placeholder="Pesquise por nome ou CPF"
+          placeholder="Pesquise por nome ou login"
           titulo="Usuários"
           onSearch={listUsuarios}
         />
