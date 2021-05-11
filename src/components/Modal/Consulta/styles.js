@@ -2,6 +2,7 @@ import { makeStyles } from '@material-ui/core';
 
 export default makeStyles(theme => ({
   modal: {
+    maxWidth: 450,
     padding: 24,
     borderRadius: 5,
     display: 'flex',
@@ -20,6 +21,7 @@ export default makeStyles(theme => ({
   subtitle: {
     color: theme.palette.grey.main,
     fontSize: 18,
-    marginBottom: 12,
+    marginBottom: 32,
+    textAlign: 'center',
   },
 }));

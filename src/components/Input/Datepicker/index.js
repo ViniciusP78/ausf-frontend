@@ -1,10 +1,17 @@
 import React from 'react';
 
-import { Datepicker } from './styles';
+import { ReactComponent as CalendarIcon } from 'assets/icons/calendar.svg';
 
-const DatepickerInput = (props) => {
+import { Container, Datepicker } from './styles';
 
-  return <Datepicker  showTimeSelect {...props}/>
+const DatepickerInput = ({ style, ...props}) => {
+
+  return (
+    <Container style={style}>
+      <CalendarIcon/>
+      <Datepicker showTimeSelect {...props}/>
+    </Container>
+  )
 }
 
 export default DatepickerInput;
