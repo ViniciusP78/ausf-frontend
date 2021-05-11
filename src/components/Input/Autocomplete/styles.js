@@ -2,23 +2,24 @@ import styled, { css } from "styled-components";
 import { TextField } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 
-import getColor from 'utils/getColor';
+import getColor from "utils/getColor";
 
 export const Input = styled(TextField)`
   padding: 0;
 
   input {
     background-color: ${({ theme, backgroundColor }) =>
-      backgroundColor ? getColor(backgroundColor) : theme.grey.light};
+    backgroundColor ? getColor(backgroundColor) : theme.grey.light};
     width: 100%;
     font-size: 16px;
     padding: 14px !important;
     border: none;
     border-radius: 5px;
     transition: border-color 200ms linear;
-    color: #0D4A87;
+    color: ${({ theme }) => theme.dark.main};
 
-    :hover, :focus {
+    :hover,
+    :focus {
       border-color: #c4cdd9;
     }
 
@@ -39,14 +40,16 @@ export const Input = styled(TextField)`
       `}
   }
 
-  .MuiInput-underline:before, .MuiInput-underline:after {
+  .MuiInput-underline:before,
+  .MuiInput-underline:after {
     display: none;
   }
 `;
 
 export const StyledAutocomplete = styled(Autocomplete)`
   background-color: ${({ theme, backgroundColor }) =>
-      backgroundColor ? getColor(backgroundColor) : theme.grey.light};
+    backgroundColor ? getColor(backgroundColor) : theme.grey.light};
+  
   border-radius: 5px;
   padding-right: 14px;
   /* .MuiAutocomplete-endAdornment {
