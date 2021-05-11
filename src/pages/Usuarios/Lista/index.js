@@ -7,8 +7,9 @@ import api from "api";
 import { ReactComponent as InfoIcon } from "assets/icons/info.svg";
 import { ReactComponent as ArrowSendIcon } from "assets/icons/arrow-send.svg";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
+import cargos from "utils/cargos"
 
-import ModalEnvio from "./ModalEnvio";
+// import ModalEnvio from "./ModalEnvio";
 
 import Button from "components/Button";
 import Card from "components/CardProntuario";
@@ -29,24 +30,24 @@ const TableLabel = (props) => (
 
 const TableText = (props) => <Text color="dark" weight={400} {...props} />;
 
-const ProntuariosList = () => {
+const UsuariosList = () => {
   const history = useHistory();
   const classes = useStyles();
 
   const user = useSelector(state => state.auth.user);
 
   const [loading, setLoading] = useState(false);
-  const [prontuarios, setProntuarios] = useState();
-  const [selectedProntuario, setSelectedProntuario] = useState();
+  const [usuarios, setUsuarios] = useState();
+  const [selectedUsuarios, setSelectedUsuario] = useState();
   const [anchor, setAnchor] = useState(null);
 
-  async function listProntuarios(formData, search) {
+  async function listUsuarios(formData, search) {
     try {
       setLoading(true);
       const { data } = await api.get(
-        search ? "/prontuarios?search=".concat(search) : "/prontuarios"
+        search ? "/users?search=".concat(search) : "/users"
       );
-      setProntuarios(data);
+      setUsuarios(data);
     } catch (error) {
     } finally {
       setLoading(false);
@@ -54,32 +55,33 @@ const ProntuariosList = () => {
   }
 
   function handleClose() {
-    setSelectedProntuario(null);
+    setSelectedUsuario(null);
     setAnchor(null);
   }
 
+
   useEffect(() => {
-    listProntuarios();
+    listUsuarios();
   }, []);
 
   return (
     <Container>
-      <ModalEnvio
+      {/* <ModalEnvio
         anchor={anchor}
-        prontuario={selectedProntuario}
+        usuario={selectedUsuario}
         onClose={handleClose}
-      />
+      /> */}
 
       <Box position="sticky" top="0" zIndex="10">
         <SearchBar
           placeholder="Pesquise por nome ou CPF"
           titulo="Prontuários"
-          onSearch={listProntuarios}
+          onSearch={listUsuarios}
         />
       </Box>
 
       <Content>
-        {user.cargo_id === 4 && (
+        {user.cargo_id === 1 && (
           <Box marginBottom="30px">
             <Box display="flex">
               <Button
@@ -87,7 +89,7 @@ const ProntuariosList = () => {
                 onClick={() => history.push("/usuarios/novo")}
               >
                 <AddCircleIcon style={{ marginRight: 8 }} />
-                Adicionar Paciente
+                Adicionar Usuário
               </Button>
             </Box>
           </Box>
@@ -99,45 +101,47 @@ const ProntuariosList = () => {
         {!loading && (
           <Grid container>
             <Grid container style={{ paddingLeft: 16, marginBottom: 16 }}>
-              <Grid item sm={3}>
-                <TableLabel>Nome do paciente</TableLabel>
+              <Grid item sm={2}>
+                <TableLabel>Nome</TableLabel>
               </Grid>
               <Grid item sm={2}>
-                <TableLabel>CPF</TableLabel>
+                <TableLabel>login</TableLabel>
               </Grid>
               <Grid item sm={2}>
-                <TableLabel>RG</TableLabel>
+                <TableLabel>Cargo</TableLabel>
               </Grid>
               <Grid item sm={3}>
-                <TableLabel>Cartão SUS</TableLabel>
+                <TableLabel>Status</TableLabel>
               </Grid>
             </Grid>
 
-            {prontuarios?.map((prontuario) => (
-              <Grid container className={classes.prontuarioItem}>
-                <Grid item sm={3}>
-                  <TableText>{prontuario.paciente.nome}</TableText>
-                </Grid>
+            {usuarios?.map((usuario) => (
+              <Grid container className={classes.usuarioItem}>
                 <Grid item sm={2}>
                   <TableText>
-                    {prontuario.paciente.CPF || "384.493.938-34"}
+                    {usuario.name}
                   </TableText>
                 </Grid>
                 <Grid item sm={2}>
                   <TableText>
-                    {prontuario.paciente.RG || "384.493.938-34"}
+                    {usuario.login}
+                  </TableText>
+                </Grid>
+                <Grid item sm={2}>
+                  <TableText>
+                    {cargos[usuario.cargo_id - 1]}
                   </TableText>
                 </Grid>
                 <Grid item sm={3}>
                   <TableText>
-                    {prontuario.paciente.cartao_sus || "384.493.938-34"}
+                    {usuario.status ? 'Ativo': 'Inativo'}
                   </TableText>
                 </Grid>
                 <Grid item sm={2}>
                   <MuiButton
                     className={classes.actionButton}
                     onClick={() =>
-                      history.push(`/prontuarios/${prontuario.id}`)
+                      history.push(`/usuarios/${usuario.id}`)
                     }
                   >
                     <InfoIcon />
@@ -147,7 +151,7 @@ const ProntuariosList = () => {
                       className={classes.actionButton}
                       onClick={(e) => {
                         setAnchor(e.target);
-                        setSelectedProntuario(prontuario);
+                        setSelectedUsuario(usuario);
                       }}
                     >
                       <ArrowSendIcon />
@@ -163,4 +167,5 @@ const ProntuariosList = () => {
   );
 };
 
-export default ProntuariosList;
+
+export default UsuariosList;

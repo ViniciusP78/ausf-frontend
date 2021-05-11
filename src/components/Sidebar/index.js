@@ -10,13 +10,15 @@ import { ReactComponent as ProntuarioIcon } from "assets/icons/clipboard.svg";
 import { ReactComponent as ConsultaIcon } from "assets/icons/clock.svg";
 import { ReactComponent as LogoutIcon } from "assets/icons/logout.svg";
 import { ReactComponent as GroupIcon } from "assets/icons/group.svg";
+import { ReactComponent as PersonIcon } from "assets/icons/person.svg";
 
 import Text from "components/Text";
 import { Avatar, Drawer, Button } from "@material-ui/core";
 
+import cargos from "utils/cargos"
+
 import useStyles, { RouteButton } from "./styles";
 
-const cargos = ["Administrador", "Médico", "Enfermeiro", "Recepcionista"];
 
 function Sidebar({ open }) {
   const classes = useStyles();
@@ -63,6 +65,9 @@ function Sidebar({ open }) {
         </RouteButton>
         {user.cargo_id === 2 && <RouteButton to="/fila">
           <GroupIcon /> Fila
+        </RouteButton>}
+        {user.cargo_id === 1 && <RouteButton to="/usuarios">
+          <PersonIcon /> Usuários
         </RouteButton>}
       </div>
 
