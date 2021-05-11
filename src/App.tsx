@@ -20,6 +20,8 @@ import { ThemeProvider } from "styled-components";
 
 import socket from "services/socket";
 
+import "react-datepicker/dist/react-datepicker.css";
+
 function App() {
   const user = useSelector((store: any) => store.auth.user);
   const dispatch = useDispatch();
@@ -41,12 +43,6 @@ function App() {
   }, [user]);
 
   useEffect(() => {
-    openAlert({
-      message: "Novo prontuário recebido",
-      severity: "info",
-      duration: 5000,
-    });
-
     socket.on("receberProntuario", (prontuario) => {
       adicionarNaFila(prontuario);
       dispatch(

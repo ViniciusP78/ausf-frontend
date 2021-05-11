@@ -1,4 +1,6 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from "styled-components";
+
+import { darken } from "polished";
 
 export default createGlobalStyle`
 
@@ -21,5 +23,12 @@ export default createGlobalStyle`
   html, body {
     margin: 0;
     padding: 0;
+  }
+
+  .react-datepicker__day--keyboard-selected {
+    background-color: ${({ theme }) => theme.primary.main};
+    &:hover {
+      background-color: ${({ theme }) => darken(0.1, theme.primary.main)};
+    }
   }
 `;
