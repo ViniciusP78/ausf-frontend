@@ -4,6 +4,18 @@ import { darken } from "polished";
 
 export default createGlobalStyle`
 
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    scrollbar-width: thin;
+    background-color: #E0E4E9;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #c3c4c5;
+  }
+
   * {
     font-family: 'Ubuntu', sans-serif;
     margin: 0;
