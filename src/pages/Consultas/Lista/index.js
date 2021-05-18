@@ -47,7 +47,6 @@ const ConsultasList = () => {
 
   const [dateFilter, setDateFilter] = useState(today.current);
 
-
   async function listConsultas() {
     try {
       setLoading(true);
@@ -160,10 +159,10 @@ const ConsultasList = () => {
                     <TableText>{consulta?.prontuario.paciente.nome}</TableText>
                   </Grid>
                   <Grid item sm={3}>
-                    <TableText>
+                    <TableText transform="uppercase">
                       {format(
                         new Date(consulta?.data_agendada),
-                        "dd/MM/yyyy hh:mm"
+                        "dd/MM/yyyy hh:mm aaaaa'm'"
                       )}
                     </TableText>
                   </Grid>
