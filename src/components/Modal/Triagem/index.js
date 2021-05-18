@@ -14,6 +14,8 @@ import GenericInput from "components/Input";
 import useStyles from "./styles";
 import { Grid } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
+import { openAlert } from "store/modules/alert/actions";
+import Box from '@material-ui/core/Box';
 
 const debouncedEnfermeirsSearch = debounce(async (search) => {
   return api.get(`users?cargo=3&search=${search}`);
@@ -29,6 +31,7 @@ const Input = (props) => <GenericInput {...props} colorLabel="grey" />;
 const ModalConsulta = ({ onClose, onSubmit, ...props }) => {
   const classes = useStyles();
   const formRef = useRef();
+  const dispatch = useDispatch();
 
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -43,13 +46,19 @@ const ModalConsulta = ({ onClose, onSubmit, ...props }) => {
   const user = useSelector((state) => state.auth.user);
 
   function closeModal() {
-    setStep(0);
     setSelectedEnfermeiro(null)
     setSelectedPatient(null);
     setDate(null);
 
     onClose();
     onSubmit();
+    dispatch(
+        openAlert({
+          message: "Triagem Cadastrada",
+          severity: "success",
+          duration: 5000,
+        })
+      );
   }
 
   async function getUsers() {
@@ -82,16 +91,15 @@ const ModalConsulta = ({ onClose, onSubmit, ...props }) => {
 
   async function submit(formData) {
     try {
-      
-
       const {
-        pressao: pressao,
+        pressaoAlta: pressaoAlta,
+        pressaoBaixa: pressaoBaixa,
         altura: altura,
         peso: peso,
         } = formData;
 
       const triagem = {
-        pressao: pressao,
+        pressao: `${pressaoAlta}/${pressaoBaixa}`,
         altura: altura,
         peso: peso,
         enfermeira_id:user.id,
@@ -121,26 +129,29 @@ const ModalConsulta = ({ onClose, onSubmit, ...props }) => {
 
   return (
     <Dialog onClose={onClose} classes={{ paper: classes.modal }} {...props}>
-      {step === 0 && (
-        <>
           <p className={classes.title}>Triagem</p>
           <p className={classes.subtitle}>
             Dados do Paciente
           </p>
           <Form ref={formRef} onSubmit={submit}>
-            <Grid container spacing={2}>
-                <Input name="peso" label="Peso"/>
-                <Input name="altura" label="Altura" />
-                <Input name="pressao" label="Pressão" />
+            <Grid container spacing={2} style={{marginBottom:20}}>
+                <Grid item sm={12}>
+                    <Input name="peso" label="Peso (kg)" type="number" step="0.1"/>
+                </Grid>
+                <Grid item sm={12}>
+                    <Input name="altura" label="Altura (metros)" type="number" step="0.01"/>
+                </Grid>
+                <Grid item sm={6}>
+                    <Input name="pressaoAlta" label="Pressão sistólica" type="number" />
+                </Grid>
+                <Grid item sm={6}>
+                    <Input name="pressaoBaixa" label="Pressão  diastólica" type="number" />
+                </Grid>
             </Grid>
             <Button fullWidth type="submit">
-                Continuar
+                Cadastrar
             </Button>
            </Form>
-
-          
-        </>
-      )}
     </Dialog>
   );
 };

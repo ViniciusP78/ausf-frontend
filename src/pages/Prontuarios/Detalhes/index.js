@@ -12,7 +12,7 @@ import { ReactComponent as AddCircleIcon } from "assets/icons/add-circle.svg";
 
 import Field from "./InputField";
 import Button from "components/Button";
-import ModalConsulta from "components/Modal/Triagem";
+import ModalTriagem from "components/Modal/Triagem";
 import {
   Grid,
   CircularProgress,
@@ -23,6 +23,7 @@ import {
 import SearchBar from "components/Searchbar";
 import Text from "components/Text";
 import CardExame from "./CardExame";
+import CardTriagem from "./CardTriagem";
 import useStyles, { Container, Content, Title, ExameContainer } from "./styles";
 
 import { format } from "date-fns";
@@ -45,6 +46,7 @@ const ProntuariosList = () => {
   const [consultas, setConsultas] = useState();
   const [modalOpen, setModalOpen] = useState(false);
   const [loadings, setLoadings] = useState({ exam: false, consultas: true });
+  const [triagens, setTriagens] = useState();
 
   const { id } = useParams();
 
@@ -101,6 +103,18 @@ const ProntuariosList = () => {
     }
   }
 
+  async function listTriagens() {
+    try {
+      setLoading(true);
+      const { data } = await api.get(`/triagens/list/${prontuario.id}`);
+      console.log(data);
+      setTriagens(data);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  }
+
   useEffect(() => {
     if (id) {
       getProntuario();
@@ -111,10 +125,14 @@ const ProntuariosList = () => {
     if (prontuario) listConsultas();
   }, [prontuario]);
 
+  useEffect(() => {
+    if (prontuario) listTriagens();
+  }, [prontuario]);
+
   return (
     <>
-    <ModalConsulta
-        onSubmit={{}}
+    <ModalTriagem
+        onSubmit={listTriagens}
         open={modalOpen}
         onClose={() => setModalOpen(false)}
       />
@@ -269,6 +287,37 @@ const ProntuariosList = () => {
                 </Grid>
               </Grid>
 
+              <Grid container style={{ marginTop: 64 }}>
+                <Grid
+                  item
+                  xs={12}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginBottom: 24,
+                  }}
+                >
+                  <Title style={{ margin: 0 }}>Triagens</Title>
+
+                  <Box display="flex" marginLeft="auto">
+                    <Button
+                      onClick={() => setModalOpen(true)}
+                      style={{ }}
+                    >
+                    <AddCircleIcon style={{ marginRight: 8 }} />
+                    Cadastrar Triagem
+                  </Button>
+                </Box>
+                </Grid>
+                <Grid item xs={12} className={classes.examesContainer}>
+                  {triagens?.map(triagem => (
+                    <ExameContainer>
+                      <CardTriagem triagem={triagem}/>
+                    </ExameContainer>
+                  ))}
+                </Grid>
+              </Grid>
+
               <Grid item xs={12} style={{ marginTop: 64 }}>
                 <Button
                   style={{ padding: 8, marginRight: 8 }}
@@ -286,15 +335,6 @@ const ProntuariosList = () => {
                   <TrashIcon style={{ marginRight: 8 }} />
                   Deletar
                 </Button>
-                <Box display="flex">
-                  <Button
-                    onClick={() => setModalOpen(true)}
-                    style={{ padding: "12px 16px" }}
-                  >
-                    <AddCircleIcon style={{ marginRight: 8 }} />
-                    Agendar Consulta
-                  </Button>
-                </Box>
                 {/* <Button
                   style={{ padding: 8 }}
                   onClick={() =>

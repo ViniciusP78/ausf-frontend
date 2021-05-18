@@ -4,7 +4,7 @@ export default makeStyles(theme => ({
   modal: {
     maxWidth: 400,
     width:400,
-    height:450,
+    height:500,
     padding: 38,
     borderRadius: 5,
     display: 'flex',
