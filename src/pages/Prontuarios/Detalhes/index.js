@@ -13,6 +13,8 @@ import { Grid, CircularProgress, Dialog } from "@material-ui/core";
 import { Container, Content } from "./styles";
 import SearchBar from 'components/Searchbar';
 import Box from '@material-ui/core/Box';
+import ModalConsulta from "components/Modal/Triagem";
+import { ReactComponent as AddCircleIcon } from "assets/icons/add-circle.svg";
 
 import { format } from 'date-fns';
 
@@ -22,7 +24,8 @@ const ProntuariosList = () => {
 
   const [loading, setLoading] = useState(false);
   const [prontuario, setProntuario] = useState();
-  const [modalOpen, setModal] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+
 
   const { id } = useParams();
 
@@ -59,6 +62,12 @@ const ProntuariosList = () => {
   }, [id]);
 
   return (
+    <>
+    <ModalConsulta
+        onSubmit={{}}
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+      />
     <Container>
       <Box position="sticky" top="0" zIndex="10">
         <SearchBar backRoute="/prontuarios" titulo="Prontuários"/>
@@ -127,6 +136,15 @@ const ProntuariosList = () => {
                   <Trash style={{ marginRight: 8 }} />
                   Deletar
                 </Button>
+                <Box display="flex">
+                  <Button
+                    onClick={() => setModalOpen(true)}
+                    style={{ padding: "12px 16px" }}
+                  >
+                    <AddCircleIcon style={{ marginRight: 8 }} />
+                    Agendar Consulta
+                  </Button>
+                </Box>
                 {/* <Button
                   style={{ padding: 8 }}
                   onClick={() =>
@@ -141,6 +159,7 @@ const ProntuariosList = () => {
         </Grid>
       </Content>
     </Container>
+    </>
   );
 };
 
