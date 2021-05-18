@@ -27,7 +27,7 @@ function Sidebar({ open }) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const user = useSelector((state) => state.auth.user);
-  console.log(user);
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };

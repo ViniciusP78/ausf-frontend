@@ -19,6 +19,7 @@ import {
   Button as MuiButton,
   Box,
 } from "@material-ui/core";
+import { Pagination } from '@material-ui/lab';
 import SearchBar from "components/Searchbar";
 
 import useStyles, { Container, Content } from "./styles";
@@ -39,6 +40,7 @@ const ProntuariosList = () => {
   const [prontuarios, setProntuarios] = useState();
   const [selectedProntuario, setSelectedProntuario] = useState();
   const [anchor, setAnchor] = useState(null);
+  const [page, setPage] = useState(1);
 
   async function listProntuarios(formData, search) {
     try {
@@ -84,7 +86,7 @@ const ProntuariosList = () => {
             <Box display="flex">
               <Button
                 style={{ padding: "12px 16px" }}
-                onClick={() => history.push("/usuarios/novo")}
+                onClick={() => history.push("/prontuarios/novo")}
               >
                 <AddCircleIcon style={{ marginRight: 8 }} />
                 Adicionar Paciente
@@ -156,6 +158,10 @@ const ProntuariosList = () => {
                 </Grid>
               </Grid>
             ))}
+
+            <Grid item xs={12}>
+              <Pagination />
+            </Grid>
           </Grid>
         )}
       </Content>
