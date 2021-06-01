@@ -3,13 +3,14 @@ import React, { useState, useEffect } from "react";
 import api from "api";
 
 import debounce from "awesome-debounce-promise";
-
+import { useDispatch } from "react-redux";
 import Form from "components/Form";
 import DateInput from "components/Input/Datepicker";
 import Button from "components/Button";
 import Autocomplete from "components/Input/Autocomplete";
 import { Dialog } from "@material-ui/core";
 import useStyles from "./styles";
+import { openAlert } from "store/modules/alert/actions";
 
 const debouncedMedicSearch = debounce(async (search) => {
   return api.get(`users?cargo=2&search=${search}`);
@@ -24,6 +25,8 @@ const ModalConsulta = ({ onClose, onSubmit, ...props }) => {
 
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
 
   const [medics, setMedics] = useState();
   const [patients, setPatients] = useState();
@@ -83,6 +86,13 @@ const ModalConsulta = ({ onClose, onSubmit, ...props }) => {
       await api.post("/consultas", consulta);
 
       closeModal();
+      dispatch(
+        openAlert({
+          message: "Consulta agendada",
+          severity: "success",
+          duration: 5000,
+        })
+      );
     } catch (error) {
     } finally {
       setLoading(false);

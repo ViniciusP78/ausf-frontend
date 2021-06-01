@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { openConfirmation } from "store/modules/confirmation/actions";
-
+import { openAlert } from "store/modules/alert/actions";
 import api from "api";
 
 import { ReactComponent as InfoIcon } from "assets/icons/info.svg";
@@ -62,6 +62,13 @@ const ConsultasList = () => {
     try {
       const { data } = await api.delete(`consultas/${idConsulta}`);
       listConsultas();
+      dispatch(
+        openAlert({
+          message: "Consulta excluída",
+          severity: "success",
+          duration: 5000,
+        })
+      );
     } catch (error) {}
   }
 
