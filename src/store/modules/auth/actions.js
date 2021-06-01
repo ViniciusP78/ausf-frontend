@@ -18,6 +18,12 @@ export const signInError = () => {
   };
 };
 
+export const clearError = () => {
+  return {
+    type: '@auth/CLEAR_ERROR',
+  };
+};
+
 export const signOutRequest = () => {
   return {
     type: '@auth/SIGNOUT_REQUEST',

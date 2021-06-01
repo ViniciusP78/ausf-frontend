@@ -54,6 +54,7 @@ export default function CustomizedInputBase({
             placeholder={placeholder}
             inputProps={{ "aria-label": placeholder }}
             onKeyPress={handleEnter}
+            onChange={() => onSearch("", inputRef.current.value)}
           />
         </Paper>
       )}

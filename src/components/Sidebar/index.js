@@ -5,6 +5,7 @@ import SearchBar from "components/Searchbar";
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { signOutRequest } from "store/modules/auth/actions";
+import { openConfirmation } from "store/modules/confirmation/actions";
 
 import { ReactComponent as ProntuarioIcon } from "assets/icons/clipboard.svg";
 import { ReactComponent as ConsultaIcon } from "assets/icons/clock.svg";
@@ -35,6 +36,15 @@ function Sidebar({ open }) {
   const logout = () => {
     dispatch(signOutRequest());
   };
+
+  function confirmLogout() {
+    dispatch(
+      openConfirmation({
+        onYes: () => logout(),
+        content: "Deseja mesmo sair ?",
+      })
+    );
+  }
 
   return (
     <Drawer variant="permanent" classes={{ paper: classes.sidebar }}>
@@ -71,7 +81,7 @@ function Sidebar({ open }) {
         </RouteButton>}
       </div>
 
-      <Button className={classes.logoutButton} onClick={logout}>
+      <Button className={classes.logoutButton} onClick={() => confirmLogout()}>
         <LogoutIcon />
         Sair
       </Button>

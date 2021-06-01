@@ -111,7 +111,7 @@ const CadastrarProntuario = () => {
             <Grid item xs={4}></Grid>
 
             <Grid item xs={4}>
-              <Input name="CPF" label="CPF do paciente" />
+              <Input name="CPF" label="CPF do paciente" mask="cpf"/>
             </Grid>
             {!id && (
               <>
