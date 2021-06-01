@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   user: null,
   loading: false,
   logged: false,
+  error: false,
 };
 
 export default function (state = INITIAL_STATE, action) {
@@ -21,7 +22,10 @@ export default function (state = INITIAL_STATE, action) {
       };
 
     case '@auth/SIGNIN_ERROR':
-      return { ...state, loading: false };
+      return { ...state, loading: false, error: true };
+
+    case '@auth/CLEAR_ERROR':
+      return { ...state, error: false };
 
     case '@auth/SIGNOUT_REQUEST':
       return { ...INITIAL_STATE };
