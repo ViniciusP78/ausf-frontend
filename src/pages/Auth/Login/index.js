@@ -1,7 +1,8 @@
-import React, { useRef } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { signInRequest } from "store/modules/auth/actions";
+import { signInRequest, clearError } from "store/modules/auth/actions";
+import { openAlert } from "store/modules/alert/actions";
 
 import api from "api";
 import loginSchema from "validators/User/login.schema";
@@ -21,6 +22,8 @@ const Login = () => {
 
   const dispatch = useDispatch();
 
+  const { loading, error } = useSelector((state) => state.auth);
+
   async function login(authData) {
     try {
       const { success, errors } = await validate(loginSchema, authData);
@@ -31,6 +34,17 @@ const Login = () => {
     } catch (error) {}
   }
 
+  useEffect(() => {
+    if (error) {
+      dispatch(openAlert({
+        message: "E-mail ou senha inválida",
+        severity: "error",
+        duration: 4000,
+      }));
+      dispatch(clearError());
+    }
+  }, [error]);
+
   return (
     <Container>
       <GreenSide />
@@ -38,7 +52,10 @@ const Login = () => {
       <FormContainer>
         <Title>Bem vindo à USF Digital</Title>
 
-        <Subtitle>Insira suas credenciais para <br/>acessar o sistema</Subtitle>
+        <Subtitle>
+          Insira suas credenciais para <br />
+          acessar o sistema
+        </Subtitle>
 
         <Form onSubmit={login} ref={formRef}>
           <Grid container spacing={2}>
@@ -54,7 +71,12 @@ const Login = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <Button fullWidth type="submit" style={{ padding: 12, fontWeight: 500, }}>
+              <Button
+                loading={loading}
+                fullWidth
+                type="submit"
+                style={{ padding: 12, fontWeight: 500 }}
+              >
                 Entrar
               </Button>
             </Grid>
