@@ -6,5 +6,5 @@ export default yup.object().shape({
   CPF: yup.string().required("Campo obrigatório"),
   data_nascimento: yup.string(),
   cidade_nascimento: yup.string().required("Campo obrigatório"),
-  observacoes: yup.string().required("Campo obrigatório"),
+  observacoes: yup.string(),
 });
