@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { openConfirmation } from "store/modules/confirmation/actions";
 
 import api from "api";
@@ -42,12 +42,14 @@ const ProntuariosList = () => {
 
   const examInputRef = useRef(null);
 
+  const user = useSelector((state) => state.auth.user);
+
   const [loading, setLoading] = useState(false);
   const [loadings, setLoadings] = useState({ exam: false, consultas: true });
- 
+
   const [prontuario, setProntuario] = useState();
   const [modalOpen, setModalOpen] = useState(false);
-  
+
   const [consultas, setConsultas] = useState();
   const [triagens, setTriagens] = useState();
   const [exames, setExames] = useState();
@@ -91,10 +93,12 @@ const ProntuariosList = () => {
       setLoadings((prev) => ({ ...prev, exam: true }));
 
       const { data } = await api.post("/uploads", formData);
-      await api.post("/exames", { prontuario_id: prontuario.id, url: data.url });
+      await api.post("/exames", {
+        prontuario_id: prontuario.id,
+        url: data.url,
+      });
 
       await listExames();
-
     } catch (error) {
       console.log(error);
     } finally {
@@ -280,72 +284,75 @@ const ProntuariosList = () => {
                   ))}
                 </Grid>
 
-                <Grid container style={{ marginTop: 64 }}>
-                  <Grid
-                    item
-                    xs={12}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginBottom: 24,
-                    }}
-                  >
-                    <Title style={{ margin: 0 }}>Exames</Title>
+                {[2, 3].includes(user.cargo_id) && (
+                  <>
+                    <Grid container style={{ marginTop: 64 }}>
+                      <Grid
+                        item
+                        xs={12}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          marginBottom: 24,
+                        }}
+                      >
+                        <Title style={{ margin: 0 }}>Exames</Title>
 
-                    <input
-                      type="file"
-                      style={{ display: "none" }}
-                      accept="application/pdf"
-                      onInput={uploadExam}
-                      ref={examInputRef}
-                    />
+                        <input
+                          type="file"
+                          style={{ display: "none" }}
+                          accept="application/pdf"
+                          onInput={uploadExam}
+                          ref={examInputRef}
+                        />
 
-                    <Button
-                      style={{ marginLeft: "auto" }}
-                      onClick={() => examInputRef.current.click()}
-                      loading={loadings.exam}
-                    >
-                      <UploadIcon style={{ marginRight: 12 }} />
-                      Enviar exame
-                    </Button>
-                  </Grid>
-                  <Grid item xs={12} className={classes.examesContainer}>
-                    {exames?.map((exame) => (
-                      <ExameContainer>
-                        <CardExame data={exame} />
-                      </ExameContainer>
-                    ))}
-                  </Grid>
-                </Grid>
+                        <Button
+                          style={{ marginLeft: "auto" }}
+                          onClick={() => examInputRef.current.click()}
+                          loading={loadings.exam}
+                        >
+                          <UploadIcon style={{ marginRight: 12 }} />
+                          Enviar exame
+                        </Button>
+                      </Grid>
+                      <Grid item xs={12} className={classes.examesContainer}>
+                        {exames?.map((exame) => (
+                          <ExameContainer>
+                            <CardExame data={exame} />
+                          </ExameContainer>
+                        ))}
+                      </Grid>
+                    </Grid>
 
-                <Grid container style={{ marginTop: 64 }}>
-                  <Grid
-                    item
-                    xs={12}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginBottom: 24,
-                    }}
-                  >
-                    <Title style={{ margin: 0 }}>Triagens</Title>
+                    <Grid container style={{ marginTop: 64 }}>
+                      <Grid
+                        item
+                        xs={12}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          marginBottom: 24,
+                        }}
+                      >
+                        <Title style={{ margin: 0 }}>Triagens</Title>
 
-                    <Box display="flex" marginLeft="auto">
-                      <Button onClick={() => setModalOpen(true)} style={{}}>
-                        <AddCircleIcon style={{ marginRight: 8 }} />
-                        Cadastrar Triagem
-                      </Button>
-                    </Box>
-                  </Grid>
-                  <Grid item xs={12} className={classes.examesContainer}>
-                    {triagens?.map((triagem) => (
-                      <ExameContainer>
-                        <CardTriagem triagem={triagem} />
-                      </ExameContainer>
-                    ))}
-                  </Grid>
-                </Grid>
-
+                        <Box display="flex" marginLeft="auto">
+                          <Button onClick={() => setModalOpen(true)} style={{}}>
+                            <AddCircleIcon style={{ marginRight: 8 }} />
+                            Cadastrar Triagem
+                          </Button>
+                        </Box>
+                      </Grid>
+                      <Grid item xs={12} className={classes.examesContainer}>
+                        {triagens?.map((triagem) => (
+                          <ExameContainer>
+                            <CardTriagem triagem={triagem} />
+                          </ExameContainer>
+                        ))}
+                      </Grid>
+                    </Grid>
+                  </>
+                )}
                 <Grid item xs={12} style={{ marginTop: 64 }}>
                   <Button
                     style={{ padding: 8, marginRight: 8 }}
