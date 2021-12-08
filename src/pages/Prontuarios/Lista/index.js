@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import api from "api";
+import masks from 'utils/masks'
 
 import { ReactComponent as InfoIcon } from "assets/icons/info.svg";
 import { ReactComponent as ArrowSendIcon } from "assets/icons/arrow-send.svg";
@@ -19,7 +20,7 @@ import {
   Button as MuiButton,
   Box,
 } from "@material-ui/core";
-import { Pagination } from '@material-ui/lab';
+import { Pagination } from "@material-ui/lab";
 import SearchBar from "components/Searchbar";
 
 import useStyles, { Container, Content } from "./styles";
@@ -34,7 +35,7 @@ const ProntuariosList = () => {
   const history = useHistory();
   const classes = useStyles();
 
-  const user = useSelector(state => state.auth.user);
+  const user = useSelector((state) => state.auth.user);
 
   const [loading, setLoading] = useState(false);
   const [prontuarios, setProntuarios] = useState();
@@ -101,7 +102,7 @@ const ProntuariosList = () => {
         {!loading && (
           <Grid container>
             <Grid container style={{ paddingLeft: 16, marginBottom: 16 }}>
-              <Grid item sm={3}>
+              <Grid item sm={4}>
                 <TableLabel>Nome do paciente</TableLabel>
               </Grid>
               <Grid item sm={2}>
@@ -110,29 +111,33 @@ const ProntuariosList = () => {
               <Grid item sm={2}>
                 <TableLabel>RG</TableLabel>
               </Grid>
-              <Grid item sm={3}>
+              <Grid item sm={2}>
                 <TableLabel>Cartão SUS</TableLabel>
               </Grid>
             </Grid>
 
             {prontuarios?.map((prontuario) => (
               <Grid container className={classes.prontuarioItem}>
-                <Grid item sm={3}>
+                <Grid item sm={4}>
                   <TableText>{prontuario.paciente.nome}</TableText>
                 </Grid>
                 <Grid item sm={2}>
                   <TableText>
-                    {prontuario.paciente.CPF || "384.493.938-34"}
+                    {prontuario?.paciente.CPF
+                      ? masks.cpf(prontuario.paciente.CPF)
+                      : "Não informado"}
                   </TableText>
                 </Grid>
                 <Grid item sm={2}>
                   <TableText>
-                    {prontuario.paciente.RG || "384.493.938-34"}
+                    {prontuario?.paciente.RG
+                      ? masks.rg(prontuario.paciente.RG)
+                      : "Não informado"}
                   </TableText>
                 </Grid>
-                <Grid item sm={3}>
+                <Grid item sm={2}>
                   <TableText>
-                    {prontuario.paciente.cartao_sus || "384.493.938-34"}
+                    {prontuario.paciente.cartao_sus || "Não informado"}
                   </TableText>
                 </Grid>
                 <Grid item sm={2}>

@@ -1,5 +1,6 @@
 export default {
   unmask: (string) => string.replace(/\D/g, ''),
+  number: (string) => string.replace(/\D/g, ''),
   cpf: (string) =>
     string
       .replace(/\D/g, '') // Replace any non-number character for nothing

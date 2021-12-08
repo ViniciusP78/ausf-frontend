@@ -47,10 +47,12 @@ const ConsultasList = () => {
 
   const [dateFilter, setDateFilter] = useState(today.current);
 
-  async function listConsultas() {
+  async function listConsultas(search) {
     try {
       setLoading(true);
-      const { data } = await api.get("/consultas", { params: { data: dateFilter }});
+      const { data } = await api.get("/consultas", {
+        params: { data: dateFilter, search }
+      });
       setConsultas(data);
     } catch (error) {
     } finally {
@@ -98,6 +100,7 @@ const ConsultasList = () => {
           <SearchBar
             placeholder="Pesquise por nome ou CPF do paciente"
             titulo="Consultas"
+            onSearch={(e, val) => listConsultas(val)}
           />
         </Box>
         <Content>

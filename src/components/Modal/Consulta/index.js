@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import api from "api";
+import { steps } from "validators/Consulta/create.schema";
+import validate from "utils/yupValidate";
 
 import debounce from "awesome-debounce-promise";
 import { useDispatch } from "react-redux";
@@ -9,8 +11,8 @@ import DateInput from "components/Input/Datepicker";
 import Button from "components/Button";
 import Autocomplete from "components/Input/Autocomplete";
 import { Dialog } from "@material-ui/core";
-import useStyles from "./styles";
 import { openAlert } from "store/modules/alert/actions";
+import useStyles, { StepContainer } from "./styles";
 
 const debouncedMedicSearch = debounce(async (search) => {
   return api.get(`users?cargo=2&search=${search}`);
@@ -20,8 +22,10 @@ const debouncedPatientSearch = debounce(async (search) => {
   return api.get(`prontuarios?search=${search}`);
 }, 400);
 
-const ModalConsulta = ({ onClose, onSubmit, ...props }) => {
+const ModalConsulta = ({ onClose, onSubmit, open, ...props }) => {
   const classes = useStyles();
+
+  const formRef = useRef();
 
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -37,7 +41,7 @@ const ModalConsulta = ({ onClose, onSubmit, ...props }) => {
 
   function closeModal() {
     setStep(0);
-    setSelectedMedico(null)
+    setSelectedMedico(null);
     setSelectedPatient(null);
     setDate(null);
 
@@ -73,14 +77,17 @@ const ModalConsulta = ({ onClose, onSubmit, ...props }) => {
     setPatients(data);
   }
 
-  async function submit() {
+  async function createConsulta(data_agendada) {
     try {
       const consulta = {
-        data_agendada: date,
-        prontuario_id: selectedPatient.id,
-        medico_id: selectedMedico.id,
+        data_agendada,
+        prontuario_id: selectedPatient?.id,
+        medico_id: selectedMedico?.id,
       };
 
+      const { success, errors } = await validate(steps[step], consulta);
+      if (!success) return formRef.current.setErrors(errors);
+      
       setLoading(true);
 
       await api.post("/consultas", consulta);
@@ -94,9 +101,23 @@ const ModalConsulta = ({ onClose, onSubmit, ...props }) => {
         })
       );
     } catch (error) {
+      console.log(error)
     } finally {
       setLoading(false);
     }
+  }
+
+  async function nextStep(formData) {
+    try {
+      const { success, errors } = await validate(steps[step], formData);
+      if (!success) return formRef.current.setErrors(errors);
+      setStep(step + 1);
+    } catch (error) {}
+  }
+
+  async function handleSubmit(formData) {
+    if (step === 0) return nextStep(formData);
+    await createConsulta(formData.data_agendada);
   }
 
   useEffect(() => {
@@ -105,78 +126,80 @@ const ModalConsulta = ({ onClose, onSubmit, ...props }) => {
   }, []);
 
   useEffect(() => {
-    console.log(selectedMedico);
-  }, [selectedMedico]);
+    setStep(0);
+  }, [open]);
 
   return (
-    <Dialog onClose={onClose} classes={{ paper: classes.modal }} {...props}>
-      {step === 0 && (
-        <>
+    <Dialog onClose={onClose} open={open} classes={{ paper: classes.modal }} {...props}>
+      <Form onSubmit={handleSubmit} ref={formRef} style={{ width: "100%" }}>
+        <StepContainer hide={step != 0}>
           <p className={classes.title}>Data e horário</p>
           <p className={classes.subtitle}>
             Selecione uma data e horário para a consulta
           </p>
           <DateInput
+            name="data_agendada"
             placeholderText="Selecione uma data"
-            selected={date}
-            onChange={(date) => setDate(date)}
-            style={{ marginBottom: 32, width: "100%" }}
+            showTimeSelect
             dateFormat="dd/MM/yyyy hh:mm"
+            style={{ width: '100%' }}
           />
 
-          <Button fullWidth onClick={() => setStep(step + 1)}>
+          <Button
+            style={{ marginTop: 32, width: "100%" }}
+            fullWidth
+            type="submit"
+          >
             Continuar
           </Button>
-        </>
-      )}
+        </StepContainer>
 
-      {step === 1 && (
-        <>
+        <StepContainer hide={step != 1}>
           <p className={classes.title}>Médico e paciente</p>
           <p className={classes.subtitle}>
             Selecione um médico e verifique os horários das consultas já
             agendadas com ele
           </p>
-          <Form style={{ width: "100%", marginBottom: 32 }}>
-            <Autocomplete
-              label="Selecione um médico"
-              name="medic"
-              colorLabel="grey"
-              options={medics}
-              getOptionValue={(medic) => medic.id}
-              getOptionLabel={(medic) => medic.name}
-              autoComplete="off"
-              onInputChange={searchMedics}
-              filterOptions={(options, state) => options}
-              onChange={(e, value) => setSelectedMedico(value)}
-              fullWidth
-              style={{ marginBottom: 24 }}
-            />
+          <Autocomplete
+            label="Selecione um médico"
+            name="medico_id"
+            colorLabel="grey"
+            options={medics}
+            getOptionValue={(medic) => medic.id}
+            getOptionLabel={(medic) => medic.name}
+            autoComplete="off"
+            onInputChange={searchMedics}
+            filterOptions={(options, state) => options}
+            onChange={(e, value) => setSelectedMedico(value)}
+            fullWidth
+          />
 
-            <Autocomplete
-              label="Selecione um paciente"
-              name="medic"
-              colorLabel="grey"
-              options={patients}
-              getOptionValue={(prontuario) => prontuario.id}
-              getOptionLabel={(prontuario) => prontuario?.paciente?.nome}
-              autoComplete="off"
-              onInputChange={searchPatients}
-              filterOptions={(options, state) => options}
-              onChange={(e, value) => setSelectedPatient(value)}
-              fullWidth
-            />
-          </Form>
+          <div style={{ marginTop: 24 }} />
+
+          <Autocomplete
+            label="Selecione um paciente"
+            name="prontuario_id"
+            colorLabel="grey"
+            options={patients}
+            getOptionValue={(prontuario) => prontuario.id}
+            getOptionLabel={(prontuario) => prontuario?.paciente?.nome}
+            autoComplete="off"
+            onInputChange={searchPatients}
+            filterOptions={(options, state) => options}
+            onChange={(e, value) => setSelectedPatient(value)}
+            fullWidth
+          />
 
           <Button
+            style={{ marginTop: 32, width: "100%" }}
             fullWidth
             loading={loading}
-            onClick={() => (step === 0 ? setStep(1) : submit())}
+            type="submit"
           >
-            {step === 1 ? "Agendar Consulta" : "Continuar"}
+            Agendar Consulta
           </Button>
-        </>
-      )}
+        </StepContainer>
+      </Form>
     </Dialog>
   );
 };

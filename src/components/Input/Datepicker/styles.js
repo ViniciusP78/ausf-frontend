@@ -3,6 +3,14 @@ import styled from 'styled-components';
 import GenericDatepicker from 'react-datepicker';
 
 export const Container = styled.div`
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+
+export const InputContainer = styled.div`
   background-color: ${({ theme }) => theme.grey.light};
   border-radius: 5px;
   display: flex;

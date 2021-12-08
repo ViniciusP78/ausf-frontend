@@ -30,7 +30,7 @@ const UsuariosList = () => {
     try {
       setLoading(true);
       const { data } = await api.get(`/users/${id}`);
-      console.log(data);
+
       setUsuario(data);
     } catch (error) {
     } finally {

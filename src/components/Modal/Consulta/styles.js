@@ -1,4 +1,12 @@
+import styled from 'styled-components';
+
 import { makeStyles } from '@material-ui/core';
+
+export const StepContainer = styled.div`
+  display: ${({ hide }) => hide ? 'none' : 'flex'};
+  flex-direction: column;
+  align-items: center;
+`
 
 export default makeStyles(theme => ({
   modal: {

@@ -67,7 +67,6 @@ export const FieldContainer = styled.div`
 export const Field = styled.input`
   ${inputStyles};
   -webkit-appearance: none;
-  background-color: 
   width: 100%;
   font-size: 14px;
 

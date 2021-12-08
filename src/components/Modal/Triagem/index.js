@@ -123,10 +123,6 @@ const ModalConsulta = ({ onClose, onSubmit, ...props }) => {
     getPatients();
   }, []);
 
-  useEffect(() => {
-    console.log(selectedEnfermeiro);
-  }, [selectedEnfermeiro]);
-
   return (
     <Dialog onClose={onClose} classes={{ paper: classes.modal }} {...props}>
           <p className={classes.title}>Triagem</p>

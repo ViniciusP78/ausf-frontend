@@ -13,8 +13,8 @@ import GenericInput from "components/Input";
 import Form from "components/Form";
 import GenericButton from "components/Button";
 import { Heading } from "components/Text";
-import SearchBar from 'components/Searchbar';
-import Box from '@material-ui/core/Box';
+import SearchBar from "components/Searchbar";
+import Box from "@material-ui/core/Box";
 
 import { Container, Content } from "./styles";
 
@@ -56,22 +56,14 @@ const CadastrarProntuario = () => {
       const { success, errors } = await validate(createSchema, formData);
       if (!success) return formRef.current.setErrors(errors);
 
-      const {
-        nome,
-        CPF,
-        data_nascimento,
-        nome_mae,
-        observacoes,
-        cidade_nascimento,
-      } = formData;
+      const { data_nascimento, observacoes, ...rest } = formData;
 
       const paciente = {
-        nome,
-        CPF,
-        data_nascimento: new Date(),
-        nome_mae,
+        data_nascimento: data_nascimento
+          ? new Date(data_nascimento)
+          : new Date(),
         sexo: "M",
-        cidade_nascimento,
+        ...rest,
       };
 
       if (id) {
@@ -85,7 +77,7 @@ const CadastrarProntuario = () => {
         await api.post("/prontuarios", prontuario);
       }
 
-      history.push('/prontuarios');
+      history.push("/prontuarios");
     } catch (error) {
       console.log("zz", error);
     }
@@ -94,7 +86,10 @@ const CadastrarProntuario = () => {
   return (
     <Container>
       <Box position="sticky" top="0" zIndex="10">
-        <SearchBar placeholder="Pesquise por nome ou CPF" titulo="Prontuários"/>
+        <SearchBar
+          placeholder="Pesquise por nome ou CPF"
+          titulo="Prontuários"
+        />
       </Box>
       <Content>
         <Form onSubmit={submitForm} ref={formRef}>
@@ -102,36 +97,46 @@ const CadastrarProntuario = () => {
             <Grid item xs={12}>
               <Heading level={2}>Dados do paciente</Heading>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={6}>
               <Input name="nome" label="Nome completo" />
             </Grid>
-            <Grid item xs={4}>
-              <Input name="nome_mae" label="Nome da mãe" />
+            <Grid item xs={3}>
+              <Input name="CPF" label="CPF do paciente" mask="cpf" />
             </Grid>
-            <Grid item xs={4}></Grid>
+            <Grid item xs={3}>
+              <Input name="RG" label="RG do paciente" mask="rg" />
+            </Grid>
+            <Grid item xs={4}>
+              <Input name="cartao_sus" label="Cartão SUS" mask="number" />
+            </Grid>
 
-            <Grid item xs={4}>
-              <Input name="CPF" label="CPF do paciente" mask="cpf"/>
-            </Grid>
             {!id && (
               <>
-                <Grid item xs={4}>
+                <Grid item xs={3}>
                   <Input
                     name="data_nascimento"
                     label="Data de nascimento"
                     type="date"
                   />
                 </Grid>
-                <Grid item xs={4}></Grid>
               </>
             )}
 
-            <Grid item xs={4}>
+            <Grid item xs={5}>
               <Input name="cidade_nascimento" label="Cidade de nascimento" />
             </Grid>
 
             <Grid item xs={12} style={{ marginTop: 48 }}>
               <Heading level={2}>Outras informações</Heading>
+            </Grid>
+            <Grid item xs={6}>
+              <Input name="nome_mae" label="Nome da mãe" />
+            </Grid>
+            <Grid item xs={6}>
+              <Input name="nome_pai" label="Nome do pai" />
+            </Grid>
+            <Grid item xs={12}>
+              <Input name="logradouro" label="Logradouro" />
             </Grid>
             <Grid item xs={12}>
               <Input
@@ -155,7 +160,7 @@ const CadastrarProntuario = () => {
 
               <Button type="submit">
                 <SaveIcon style={{ marginRight: 8 }} />
-                Finalizar {id ? 'edição' : 'cadastro'}
+                Finalizar {id ? "edição" : "cadastro"}
               </Button>
             </Grid>
           </Grid>

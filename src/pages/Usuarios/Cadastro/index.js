@@ -18,6 +18,7 @@ import { Heading } from "components/Text";
 import SearchBar from 'components/Searchbar';
 import Box from '@material-ui/core/Box';
 import InputLabel from '@material-ui/core/InputLabel';
+import { Label } from 'components/Input/styles'
 
 import useStyles, { Container, Content } from "./styles";
 
@@ -138,9 +139,9 @@ const CadastrarUsuario = () => {
             <Grid item xs={4}></Grid>
 
             <Grid item xs={4}>
-              <InputLabel shrink id="cargo_id-label" className={classes.selectLabel}>
-                    Cargo
-              </InputLabel>
+              <Label color="grey">
+                Cargo
+              </Label>
               <Select
                 labelId="cargo_id"
                 label="cargo_id"
